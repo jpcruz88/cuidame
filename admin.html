@@ -547,6 +547,9 @@ async function enterApp(){
   $("whoami").textContent=user?user.email:"";
   await loadAll(false);
 }
+// Si la sesión se restaura/renueva tarde (refresh de token), entra al panel sin
+// dejar al usuario atascado en el login.
+client.auth.onAuthStateChange((_e,session)=>{ if(session && $("app").classList.contains("hidden")) enterApp(); });
 (async()=>{ const {data:{session}}=await client.auth.getSession(); session?await enterApp():show($("login")); })();
 </script>
 </body>

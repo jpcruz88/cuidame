@@ -7,199 +7,324 @@
 <title>Cuídame · Panel de administrador</title>
 <style>
   :root{
-    --cream:#FBF6EF; --surface:#FFFFFF; --ink:#2E2823; --muted:#8A7E70;
-    --line:#ECE3D6; --terracota:#CF6A4C; --sage:#5E8B6A; --tint:#FBEDE6;
+    --sidebar:#FBF6EF; --bg:#FFFFFF; --surface:#FFFFFF; --panel:#FAF6F0;
+    --ink:#2A241F; --muted:#6B6155; --faint:#8C8073; --line:#ECE3D6; --line-soft:#F2EBE0;
+    --terra:#CF6A4C; --terra-ink:#A8482A; --terra-tint:#F7E7DF;
+    --sage:#5E8B6A; --sage-ink:#3F6B4C; --sage-tint:#E7F0EA;
+    --danger:#C0392B; --danger-tint:#FBE7E3; --amber-ink:#9A6A16; --amber-tint:#FBF0DC;
+    --radius:14px; --ring:0 0 0 3px rgba(207,106,76,.28);
+    --shadow:0 1px 2px rgba(42,36,31,.05);
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--cream);color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;}
-  header{background:var(--terracota);color:#fff;padding:16px 20px;display:flex;
-    align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
-  header h1{font-size:1.1rem;margin:0;font-weight:800;}
-  header .sub{opacity:.85;font-size:.82rem;margin-top:2px;}
-  .wrap{max-width:1120px;margin:0 auto;padding:18px 20px 40px;}
-  .btn{background:var(--terracota);color:#fff;border:none;border-radius:12px;
-    padding:10px 16px;font-size:.92rem;font-weight:700;cursor:pointer;}
-  .btn:disabled{opacity:.5;cursor:default;}
-  .btn.secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.6);}
-  .btn.ghost{background:transparent;color:var(--terracota);border:1px solid var(--terracota);}
-  .btn.danger{background:#b23b22;}
-  input,textarea,select{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:12px;
-    font-size:1rem;background:var(--surface);color:var(--ink);font-family:inherit;}
-  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--terracota);}
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;}
-  .section-title{font-size:1.05rem;font-weight:800;margin:24px 0 12px;}
-  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;}
-  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;}
-  .kpi .n{font-size:1.6rem;font-weight:800;color:var(--terracota);line-height:1.1;}
-  .kpi .l{font-size:.8rem;color:var(--muted);margin-top:4px;font-weight:600;}
-  .charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:14px;}
-  .chart-card h3{font-size:.95rem;margin:0 0 10px;font-weight:700;}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);
+    font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .num{font-variant-numeric:tabular-nums;}
+  button{font-family:inherit;cursor:pointer;}
+  a{color:var(--terra-ink);}
+  ::placeholder{color:var(--faint);}
+  :focus-visible{outline:none;box-shadow:var(--ring);border-radius:10px;}
+
+  /* Buttons */
+  .btn,.btn-ghost,.btn-subtle,.btn-danger{border-radius:11px;font-weight:650;font-size:.92rem;
+    padding:9px 15px;border:1px solid transparent;display:inline-flex;align-items:center;gap:7px;
+    transition:background .16s ease,border-color .16s ease,color .16s ease,transform .1s ease;}
+  .btn{background:var(--terra);color:#fff;}
+  .btn:hover{background:#BC5B3E;}
+  .btn:active{transform:translateY(1px);}
+  .btn-ghost{background:transparent;color:var(--terra-ink);border-color:var(--terra);}
+  .btn-ghost:hover{background:var(--terra-tint);}
+  .btn-subtle{background:var(--panel);color:var(--ink);border-color:var(--line);}
+  .btn-subtle:hover{background:#F1E9DD;}
+  .btn-danger{background:var(--danger);color:#fff;}
+  .btn-danger:hover{background:#A82F22;}
+  .btn:disabled,.btn-ghost:disabled,.btn-danger:disabled{opacity:.5;cursor:default;transform:none;}
+  .sm{padding:7px 12px;font-size:.85rem;}
+  .icon{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* Inputs */
+  input,textarea,select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:11px;
+    font-size:.95rem;background:var(--surface);color:var(--ink);font-family:inherit;transition:border-color .16s;}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--terra);box-shadow:var(--ring);}
+  textarea{resize:vertical;}
+  label.field{display:block;font-size:.82rem;font-weight:650;color:var(--muted);margin-bottom:6px;}
+
+  /* Shell */
+  .shell{display:grid;grid-template-columns:250px 1fr;min-height:100dvh;}
+  .sidebar{background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;
+    padding:18px 14px;position:sticky;top:0;height:100dvh;}
+  .brand{display:flex;align-items:center;gap:11px;padding:4px 8px 14px;}
+  .brand-mark{width:38px;height:38px;border-radius:11px;background:var(--terra);color:#fff;
+    display:grid;place-items:center;font-weight:800;font-size:1.1rem;}
+  .brand-text{display:flex;flex-direction:column;line-height:1.15;}
+  .brand-text b{font-size:1.02rem;font-weight:750;}
+  .brand-text span{font-size:.76rem;color:var(--muted);}
+  .nav{display:flex;flex-direction:column;gap:3px;flex:1;}
+  .nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:11px;border:none;
+    background:transparent;color:var(--muted);font-size:.94rem;font-weight:600;text-align:left;width:100%;
+    transition:background .16s,color .16s;}
+  .nav-item:hover{background:#F3ECDF;color:var(--ink);}
+  .nav-item.active{background:var(--terra-tint);color:var(--terra-ink);font-weight:700;}
+  .nav-item .icon{stroke-width:1.9;}
+  .side-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line-soft);
+    display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .who{font-size:.78rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+  .main{min-width:0;display:flex;flex-direction:column;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 26px;
+    border-bottom:1px solid var(--line-soft);position:sticky;top:0;background:rgba(255,255,255,.9);
+    backdrop-filter:saturate(1.1) blur(6px);z-index:5;}
+  .topbar h1{font-size:1.32rem;font-weight:760;margin:0;letter-spacing:-.01em;}
+  .topbar-actions{display:flex;align-items:center;gap:12px;}
+  .updated{font-size:.78rem;color:var(--faint);}
+  .content{padding:22px 26px 56px;}
+
+  /* Stat strip */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+  .stat{background:var(--surface);padding:15px 17px;}
+  .stat .n{font-size:1.55rem;font-weight:780;line-height:1.05;letter-spacing:-.01em;}
+  .stat .l{font-size:.8rem;color:var(--muted);margin-top:3px;font-weight:600;}
+
+  .subhead{font-size:.86rem;font-weight:750;color:var(--muted);text-transform:none;margin:26px 0 12px;
+    display:flex;align-items:center;gap:8px;}
+  .subhead::after{content:"";flex:1;height:1px;background:var(--line-soft);}
+
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;}
+  .card h3{font-size:.92rem;margin:0 0 12px;font-weight:700;color:var(--ink);}
   .chart-box{position:relative;height:230px;}
-  .muted{color:var(--muted);font-size:.9rem;}
-  .center{max-width:400px;margin:8vh auto 0;}
+
+  /* Tables */
+  .toolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+  .toolbar .search{max-width:340px;}
+  .count{font-size:.82rem;color:var(--muted);font-weight:600;}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);}
+  table{border-collapse:collapse;width:100%;font-size:.88rem;}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line-soft);white-space:nowrap;}
+  th{background:var(--panel);color:var(--muted);font-weight:700;font-size:.78rem;letter-spacing:.01em;
+    position:sticky;top:0;}
+  tbody tr{transition:background .12s;}
+  tbody tr:hover{background:#FBF7F1;}
+  tr:last-child td{border-bottom:none;}
+  td.strong{font-weight:700;color:var(--ink);}
+
+  .pill{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:20px;font-size:.72rem;font-weight:700;}
+  .pill.ok{background:var(--sage-tint);color:var(--sage-ink);}
+  .pill.no{background:var(--panel);color:var(--faint);}
+  .pill.warn{background:var(--danger-tint);color:var(--danger);}
+  .dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+
+  /* Messages */
+  .msg{border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px;background:var(--surface);margin-bottom:10px;}
+  .msg .head{display:flex;justify-content:space-between;gap:8px;font-size:.79rem;color:var(--muted);margin-bottom:6px;flex-wrap:wrap;}
+  .msg .who-b{color:var(--ink);font-weight:700;}
+  .msg .body{font-size:.96rem;}
+
+  /* Shared health list */
+  .rowbtn{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;
+    transition:border-color .16s,background .16s;}
+  .rowbtn:hover{border-color:var(--terra);background:#FDFBF8;}
+  .rowbtn .chev{color:var(--faint);}
+
+  /* Composer */
+  .composer{max-width:640px;}
+  .seg{display:flex;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .seg button{flex:1;padding:10px;border:none;background:var(--surface);color:var(--muted);font-weight:650;font-size:.9rem;
+    border-right:1px solid var(--line);transition:background .16s,color .16s;}
+  .seg button:last-child{border-right:none;}
+  .seg button.on{background:var(--terra);color:#fff;}
+  .picklist{border:1px solid var(--line);border-radius:12px;max-height:260px;overflow:auto;margin-top:8px;}
+  .pickrow{display:flex;align-items:center;gap:11px;padding:10px 13px;border-bottom:1px solid var(--line-soft);cursor:pointer;}
+  .pickrow:last-child{border-bottom:none;}
+  .pickrow:hover{background:var(--panel);}
+  .pickrow input{width:auto;}
+  .pickrow .pu{font-weight:650;}
+  .pickrow .pe{font-size:.8rem;color:var(--muted);}
+  .helper{font-size:.83rem;color:var(--muted);}
+  .review{border:1px solid var(--terra);background:var(--terra-tint);border-radius:12px;padding:14px 16px;}
+  .review .big{font-size:1.05rem;font-weight:700;color:var(--terra-ink);}
+
+  .banner{border-radius:12px;padding:12px 15px;font-size:.9rem;}
+  .banner.error{background:var(--danger-tint);color:#8f2a1e;border:1px solid #e7b3aa;}
+  .banner.success{background:var(--sage-tint);color:var(--sage-ink);border:1px solid #b8d3c1;}
+
+  .empty{padding:34px 20px;text-align:center;color:var(--muted);}
+  .empty svg{stroke:var(--faint);margin-bottom:10px;}
+
+  /* Skeleton */
+  .skel{background:linear-gradient(90deg,#F2EBE0 25%,#F8F3EA 37%,#F2EBE0 63%);background-size:400% 100%;
+    animation:sh 1.3s ease infinite;border-radius:8px;}
+  @keyframes sh{0%{background-position:100% 0}100%{background-position:-100% 0}}
+
+  /* Login */
+  .center{max-width:400px;margin:9vh auto 0;}
   .stack>*+*{margin-top:12px;}
   .hidden{display:none!important;}
-  .banner{background:var(--tint);border:1px solid var(--terracota);border-radius:12px;
-    padding:12px 14px;color:#8a3d28;font-size:.9rem;}
-  .tabs{display:flex;gap:6px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);
-    border-radius:14px;padding:6px;margin-bottom:16px;}
-  .tab{flex:1;min-width:90px;text-align:center;padding:9px 10px;border-radius:10px;cursor:pointer;
-    font-size:.9rem;font-weight:700;color:var(--muted);border:none;background:transparent;}
-  .tab.active{background:var(--terracota);color:#fff;}
-  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface);}
-  table{border-collapse:collapse;width:100%;font-size:.86rem;}
-  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap;}
-  th{background:#F6EFE4;color:var(--muted);font-weight:700;position:sticky;top:0;}
-  tr:last-child td{border-bottom:none;}
-  .pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.72rem;font-weight:700;}
-  .pill.ok{background:#E7F0EA;color:var(--sage);}
-  .pill.no{background:#F0E7E3;color:var(--muted);}
-  .pill.warn{background:#FBE7DF;color:var(--terracota);}
-  .msg{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--surface);margin-bottom:10px;}
-  .msg .head{display:flex;justify-content:space-between;gap:8px;font-size:.8rem;color:var(--muted);margin-bottom:5px;flex-wrap:wrap;}
-  .msg .body{font-size:.95rem;}
-  label.field{display:block;font-size:.85rem;font-weight:700;color:var(--muted);margin-bottom:5px;}
-  .radio-row{display:flex;gap:8px;flex-wrap:wrap;}
-  .radio-opt{flex:1;min-width:150px;border:1px solid var(--line);border-radius:12px;padding:11px 12px;
-    cursor:pointer;font-size:.9rem;}
-  .radio-opt.sel{border-color:var(--terracota);background:var(--tint);}
-  footer{max-width:1120px;margin:20px auto;padding:0 20px 30px;color:var(--muted);font-size:.78rem;}
+
+  @media (max-width:900px){
+    .shell{grid-template-columns:1fr;}
+    .sidebar{position:sticky;top:0;height:auto;flex-direction:row;align-items:center;flex-wrap:wrap;
+      border-right:none;border-bottom:1px solid var(--line);padding:12px 14px;gap:8px;z-index:20;}
+    .brand{padding:0;order:1;}
+    .side-foot{margin:0;padding:0;border:none;order:2;margin-left:auto;}
+    .nav{flex-direction:row;overflow-x:auto;order:3;flex:1 0 100%;gap:4px;padding-bottom:2px;}
+    .nav-item{flex:none;}
+    .topbar{padding:14px 18px;}
+    .content{padding:18px 18px 48px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important;}
+  }
 </style>
 </head>
 <body>
 
 <!-- ── LOGIN ─────────────────────────────────────────────────────── -->
-<div id="login" class="wrap hidden">
-  <div class="center card stack">
+<div id="login" class="hidden">
+  <div class="center card stack" style="margin-top:11vh;">
     <div>
-      <h2 style="margin:0 0 6px;">Panel de administrador</h2>
-      <p class="muted">Solo para el dueño de Cuídame. Entra con el código que llega a tu correo.</p>
+      <div class="brand" style="padding:0 0 6px;"><div class="brand-mark">C</div>
+        <div class="brand-text"><b>Cuídame</b><span>Panel de administrador</span></div></div>
+      <p class="helper" style="margin:2px 0 0;">Solo para el dueño. Entra con el código que llega a tu correo.</p>
     </div>
     <div id="step-email" class="stack">
-      <input id="email" type="email" inputmode="email" placeholder="tu@correo.com" autocomplete="email" />
-      <button id="send" class="btn">Enviar código</button>
+      <div><label class="field" for="email">Correo</label>
+        <input id="email" type="email" inputmode="email" placeholder="tu@correo.com" autocomplete="email" /></div>
+      <button id="send" class="btn" style="width:100%;justify-content:center;">Enviar código</button>
     </div>
     <div id="step-code" class="stack hidden">
-      <input id="code" type="text" inputmode="numeric" placeholder="Código de 6 dígitos" autocomplete="one-time-code" />
-      <button id="verify" class="btn">Entrar</button>
-      <button id="back" class="btn ghost">Usar otro correo</button>
+      <div><label class="field" for="code">Código de 6 dígitos</label>
+        <input id="code" type="text" inputmode="numeric" placeholder="000000" autocomplete="one-time-code" /></div>
+      <button id="verify" class="btn" style="width:100%;justify-content:center;">Entrar</button>
+      <button id="back" class="btn-subtle" style="width:100%;justify-content:center;">Usar otro correo</button>
     </div>
-    <div id="login-msg" class="banner hidden"></div>
+    <div id="login-msg" class="banner error hidden"></div>
   </div>
 </div>
 
 <!-- ── APP ───────────────────────────────────────────────────────── -->
-<div id="app" class="hidden">
-  <header>
-    <div>
-      <h1>Cuídame · Administrador</h1>
-      <div class="sub" id="whoami"></div>
+<div id="app" class="shell hidden">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">C</div>
+      <div class="brand-text"><b>Cuídame</b><span>Administrador</span></div></div>
+    <nav class="nav" id="nav">
+      <button class="nav-item active" data-tab="resumen"><svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Resumen</button>
+      <button class="nav-item" data-tab="usuarios"><svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Usuarios</button>
+      <button class="nav-item" data-tab="mensajes"><svg class="icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>Mensajes</button>
+      <button class="nav-item" data-tab="salud"><svg class="icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>Salud</button>
+      <button class="nav-item" data-tab="enviar"><svg class="icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Enviar aviso</button>
+    </nav>
+    <div class="side-foot">
+      <div class="who" id="whoami"></div>
+      <button id="logout" class="btn-subtle sm">Salir</button>
     </div>
-    <div style="display:flex;gap:8px;">
-      <button id="refresh" class="btn secondary">Actualizar</button>
-      <button id="logout" class="btn secondary">Salir</button>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <h1 id="page-title">Resumen</h1>
+      <div class="topbar-actions">
+        <span class="updated" id="updated"></span>
+        <button id="refresh" class="btn-ghost sm"><svg class="icon" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Actualizar</button>
+      </div>
     </div>
-  </header>
-  <div class="wrap">
-    <div class="tabs" id="tabs">
-      <button class="tab active" data-tab="resumen">Resumen</button>
-      <button class="tab" data-tab="usuarios">Usuarios</button>
-      <button class="tab" data-tab="mensajes">Mensajes</button>
-      <button class="tab" data-tab="salud">Salud</button>
-      <button class="tab" data-tab="enviar">Enviar aviso</button>
-    </div>
-    <div id="app-msg" class="banner hidden" style="margin-bottom:14px;"></div>
+    <div class="content">
+      <div id="app-msg" class="banner error hidden" role="alert" style="margin-bottom:16px;"></div>
 
-    <!-- RESUMEN -->
-    <section id="v-resumen">
-      <div class="section-title">Usuarios y crecimiento</div>
-      <div class="kpis" id="kpis-users"></div>
-      <div class="charts">
-        <div class="card chart-card"><h3>Nuevas cuentas por semana</h3><div class="chart-box"><canvas id="c-growth"></canvas></div></div>
-        <div class="card chart-card"><h3>Embudo de registro</h3><div class="chart-box"><canvas id="c-funnel"></canvas></div></div>
-      </div>
-      <div class="section-title">Padecimientos</div>
-      <div class="kpis" id="kpis-cond"></div>
-      <div class="charts">
-        <div class="card chart-card"><h3>Distribución</h3><div class="chart-box"><canvas id="c-cond"></canvas></div></div>
-        <div class="card chart-card"><h3>Medicamentos más mencionados</h3><div class="chart-box"><canvas id="c-meds"></canvas></div></div>
-      </div>
-      <div class="section-title">Comunidad</div>
-      <div class="kpis" id="kpis-comm"></div>
-      <div class="charts">
-        <div class="card chart-card"><h3>Mensajes por semana</h3><div class="chart-box"><canvas id="c-msgs"></canvas></div></div>
-        <div class="card chart-card"><h3>Grupos más activos</h3><div class="chart-box"><canvas id="c-groups"></canvas></div></div>
-      </div>
-      <div class="section-title">Círculos y notificaciones</div>
-      <div class="kpis" id="kpis-circ"></div>
-      <div class="charts">
-        <div class="card chart-card"><h3>Tomas compartidas por semana</h3><div class="chart-box"><canvas id="c-doses"></canvas></div></div>
-        <div class="card chart-card"><h3>Plataforma · adopción push</h3><div class="chart-box"><canvas id="c-plat"></canvas></div></div>
-      </div>
-    </section>
-
-    <!-- USUARIOS -->
-    <section id="v-usuarios" class="hidden">
-      <div class="section-title">Usuarios <span class="muted" id="users-count"></span></div>
-      <p class="muted" style="margin-top:-6px;">Marca casillas para elegir destinatarios de un aviso push (pestaña «Enviar aviso»).</p>
-      <div class="tablewrap">
-        <table id="users-table"><thead><tr>
-          <th><input type="checkbox" id="chk-all" title="Todos" /></th>
-          <th>Usuario</th><th>Correo</th><th>Registrado</th><th>Estado</th>
-          <th>Perfil</th><th>Padecimientos</th><th>Push</th><th>Últ. actividad</th>
-        </tr></thead><tbody id="users-body"></tbody></table>
-      </div>
-    </section>
-
-    <!-- MENSAJES -->
-    <section id="v-mensajes" class="hidden">
-      <div class="section-title">Mensajes de grupos de apoyo <span class="muted" id="msgs-count"></span></div>
-      <div id="msgs-list"></div>
-    </section>
-
-    <!-- SALUD -->
-    <section id="v-salud" class="hidden">
-      <div class="section-title">Perfiles compartidos</div>
-      <p class="muted" style="margin-top:-6px;">Datos de salud de los pacientes compartidos en círculos de cuidado.</p>
-      <div id="shared-list" class="stack"></div>
-      <div id="health-detail" class="card hidden" style="margin-top:14px;"></div>
-    </section>
-
-    <!-- ENVIAR AVISO -->
-    <section id="v-enviar" class="hidden">
-      <div class="section-title">Enviar notificación push</div>
-      <div class="card stack" style="max-width:620px;">
-        <div>
-          <label class="field">Título</label>
-          <input id="p-title" type="text" placeholder="Cuídame" maxlength="80" />
+      <!-- RESUMEN -->
+      <section id="v-resumen">
+        <div class="stats" id="stat-strip"></div>
+        <div class="subhead">Crecimiento</div>
+        <div class="grid2">
+          <div class="card"><h3>Nuevas cuentas por semana</h3><div class="chart-box"><canvas id="c-growth"></canvas></div></div>
+          <div class="card"><h3>Embudo de registro</h3><div class="chart-box"><canvas id="c-funnel"></canvas></div></div>
         </div>
-        <div>
-          <label class="field">Mensaje</label>
-          <textarea id="p-body" rows="3" placeholder="Escribe el aviso…" maxlength="300"></textarea>
+        <div class="subhead">Padecimientos</div>
+        <div class="grid2">
+          <div class="card"><h3>Distribución</h3><div class="chart-box"><canvas id="c-cond"></canvas></div></div>
+          <div class="card"><h3>Medicamentos más mencionados</h3><div class="chart-box"><canvas id="c-meds"></canvas></div></div>
         </div>
-        <div>
-          <label class="field">¿A quién?</label>
-          <div class="radio-row" id="p-target">
-            <div class="radio-opt sel" data-mode="all">Todos los usuarios</div>
-            <div class="radio-opt" data-mode="selected">Seleccionados (<span id="sel-count">0</span>)</div>
-            <div class="radio-opt" data-mode="condition">Por padecimiento</div>
+        <div class="subhead">Comunidad</div>
+        <div class="grid2">
+          <div class="card"><h3>Mensajes por semana</h3><div class="chart-box"><canvas id="c-msgs"></canvas></div></div>
+          <div class="card"><h3>Grupos más activos</h3><div class="chart-box"><canvas id="c-groups"></canvas></div></div>
+        </div>
+        <div class="subhead">Círculos y notificaciones</div>
+        <div class="grid2">
+          <div class="card"><h3>Tomas compartidas por semana</h3><div class="chart-box"><canvas id="c-doses"></canvas></div></div>
+          <div class="card"><h3>Plataforma de dispositivos</h3><div class="chart-box"><canvas id="c-plat"></canvas></div></div>
+        </div>
+      </section>
+
+      <!-- USUARIOS -->
+      <section id="v-usuarios" class="hidden">
+        <div class="toolbar">
+          <input id="users-search" class="search" placeholder="Buscar por nombre o correo…" />
+          <span class="count" id="users-count"></span>
+        </div>
+        <div class="tablewrap">
+          <table><thead><tr>
+            <th>Usuario</th><th>Correo</th><th>Registrado</th><th>Estado</th>
+            <th>Perfil</th><th>Padecimientos</th><th>Push</th><th>Últ. actividad</th>
+          </tr></thead><tbody id="users-body"></tbody></table>
+        </div>
+      </section>
+
+      <!-- MENSAJES -->
+      <section id="v-mensajes" class="hidden">
+        <div class="toolbar">
+          <input id="msgs-search" class="search" placeholder="Buscar en mensajes…" />
+          <span class="count" id="msgs-count"></span>
+        </div>
+        <div id="msgs-list"></div>
+      </section>
+
+      <!-- SALUD -->
+      <section id="v-salud" class="hidden">
+        <p class="helper" style="margin:0 0 14px;">Pacientes compartidos en círculos de cuidado. Toca uno para ver sus signos y tomas.</p>
+        <div id="shared-list" class="stack"></div>
+        <div id="health-detail" class="hidden" style="margin-top:16px;"></div>
+      </section>
+
+      <!-- ENVIAR AVISO -->
+      <section id="v-enviar" class="hidden">
+        <div class="card composer stack">
+          <div>
+            <label class="field" for="p-title">Título</label>
+            <input id="p-title" type="text" placeholder="Cuídame" maxlength="80" />
           </div>
+          <div>
+            <label class="field" for="p-body">Mensaje</label>
+            <textarea id="p-body" rows="3" placeholder="Escribe el aviso que verán los usuarios…" maxlength="300"></textarea>
+            <div class="helper" style="text-align:right;margin-top:4px;"><span id="p-count">0</span>/300</div>
+          </div>
+          <div>
+            <label class="field">¿A quién?</label>
+            <div class="seg" id="p-target">
+              <button data-mode="all" class="on">Todos</button>
+              <button data-mode="condition">Por padecimiento</button>
+              <button data-mode="selected">Elegir usuarios</button>
+            </div>
+            <div id="t-all" class="helper" style="margin-top:8px;">Se enviará a todos los usuarios registrados.</div>
+            <div id="t-condition" class="hidden" style="margin-top:8px;">
+              <select id="p-condition"></select>
+            </div>
+            <div id="t-selected" class="hidden" style="margin-top:8px;">
+              <input id="pick-search" placeholder="Buscar usuario…" />
+              <div class="picklist" id="pick-list"></div>
+              <div class="helper" style="margin-top:6px;"><b id="pick-count">0</b> seleccionado(s)</div>
+            </div>
+          </div>
+          <div><button id="p-review" class="btn">Revisar envío</button></div>
+          <div id="p-review-box" class="review hidden"></div>
+          <div id="p-result" class="banner hidden" role="status" aria-live="polite"></div>
         </div>
-        <div id="cond-wrap" class="hidden">
-          <label class="field">Padecimiento</label>
-          <select id="p-condition"></select>
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button id="p-preview" class="btn ghost">Previsualizar destinatarios</button>
-        </div>
-        <div id="p-confirm" class="banner hidden"></div>
-        <div id="p-result" class="hidden"></div>
-      </div>
-    </section>
-  </div>
-  <footer>Panel privado del dueño. Datos en vivo. Los avisos push llegan a los dispositivos reales de los usuarios.</footer>
+      </section>
+    </div>
+  </main>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -209,230 +334,220 @@ const SUPABASE_URL = "https://ebvfbcrqhcwrzkbljqsr.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVidmZiY3JxaGN3cnprYmxqcXNyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4NzA0OTAsImV4cCI6MjA5ODQ0NjQ5MH0.e3F5H_vdsSQ16CBkZRZIDvBWZNdWrD2l6oY8fyZAvfk";
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-const PALETTE = ["#CF6A4C","#5E8B6A","#E0A87E","#7FA88B","#C98A6A","#A7C3B0","#8A7E70","#D4B08C","#B5745A","#93B79F"];
-const LINE = "#ECE3D6", TERRA = "#CF6A4C", SAGE = "#5E8B6A", MUTED = "#8A7E70";
-const METRIC = {bloodPressure:"Presión",glucose:"Glucosa",temperature:"Temperatura",spo2:"Oxigenación",
+const PAL = ["#CF6A4C","#5E8B6A","#E0A87E","#7FA88B","#C98A6A","#A7C3B0","#8C8073","#D4B08C","#B5745A","#93B79F"];
+const LINE="#ECE3D6", TERRA="#CF6A4C", SAGE="#5E8B6A", MUTED="#6B6155";
+const METRIC={bloodPressure:"Presión",glucose:"Glucosa",temperature:"Temperatura",spo2:"Oxigenación",
   heartRate:"Frec. cardíaca",respiratoryRate:"Frec. respiratoria",pain:"Dolor",weight:"Peso"};
-Chart.defaults.font.family = "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif";
-Chart.defaults.color = MUTED;
+const TITLES={resumen:"Resumen",usuarios:"Usuarios",mensajes:"Mensajes",salud:"Salud",enviar:"Enviar aviso"};
+Chart.defaults.font.family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif";
+Chart.defaults.color=MUTED;
 
-const $ = (id) => document.getElementById(id);
-const charts = {};
-let email = "";
-let usersData = [], sharedData = [], conditionsList = [], selected = new Set();
+const $=id=>document.getElementById(id);
+const charts={}; let email="";
+let usersData=[], sharedData=[], selected=new Set(), targetMode="all";
 
-function show(el){ el.classList.remove("hidden"); }
-function hide(el){ el.classList.add("hidden"); }
-function msg(el, text){ el.textContent = text; text ? show(el) : hide(el); }
-function esc(s){ return (s==null?"":String(s)).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])); }
-function fmt(iso){ if(!iso) return "—"; try{ return new Date(iso).toLocaleString("es-MX",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}); }catch(e){ return iso; } }
-function fmtDay(iso){ if(!iso) return "—"; try{ return new Date(iso).toLocaleDateString("es-MX",{day:"2-digit",month:"short",year:"numeric"}); }catch(e){ return iso; } }
+const show=el=>el.classList.remove("hidden"), hide=el=>el.classList.add("hidden");
+function banner(el,text,kind){ el.className="banner "+(kind||"error"); el.innerHTML=text; text?show(el):hide(el); if(!text)el.className="banner hidden"; }
+const esc=s=>(s==null?"":String(s)).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+function fmt(iso){ if(!iso)return"—"; try{return new Date(iso).toLocaleString("es-MX",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});}catch(e){return iso;} }
+function fmtDay(iso){ if(!iso)return"—"; try{return new Date(iso).toLocaleDateString("es-MX",{day:"2-digit",month:"short",year:"numeric"});}catch(e){return iso;} }
 
-// ── Auth ────────────────────────────────────────────────────────────
-$("send").onclick = async () => {
-  email = $("email").value.trim(); if (!email) return;
-  $("send").disabled = true; msg($("login-msg"), "");
-  const { error } = await client.auth.signInWithOtp({ email, options:{ shouldCreateUser:false } });
-  $("send").disabled = false;
-  if (error) { msg($("login-msg"), "No se pudo enviar el código: " + error.message); return; }
-  hide($("step-email")); show($("step-code"));
-};
-$("back").onclick = () => { show($("step-email")); hide($("step-code")); msg($("login-msg"),""); };
-$("verify").onclick = async () => {
-  const token = $("code").value.trim(); if (!token) return;
-  $("verify").disabled = true; msg($("login-msg"), "");
-  const { error } = await client.auth.verifyOtp({ email, token, type:"email" });
-  $("verify").disabled = false;
-  if (error) { msg($("login-msg"), "Código incorrecto o expirado."); return; }
-  await enterApp();
-};
-$("logout").onclick = async () => { await client.auth.signOut(); location.reload(); };
-$("refresh").onclick = () => loadAll();
+// ── Auth ──
+$("send").onclick=async()=>{ email=$("email").value.trim(); if(!email)return;
+  $("send").disabled=true; banner($("login-msg"),"");
+  const {error}=await client.auth.signInWithOtp({email,options:{shouldCreateUser:false}});
+  $("send").disabled=false;
+  if(error){ banner($("login-msg"),"No se pudo enviar el código: "+esc(error.message)); return; }
+  hide($("step-email")); show($("step-code")); };
+$("back").onclick=()=>{ show($("step-email")); hide($("step-code")); banner($("login-msg"),""); };
+$("verify").onclick=async()=>{ const token=$("code").value.trim(); if(!token)return;
+  $("verify").disabled=true; banner($("login-msg"),"");
+  const {error}=await client.auth.verifyOtp({email,token,type:"email"});
+  $("verify").disabled=false;
+  if(error){ banner($("login-msg"),"Código incorrecto o expirado."); return; }
+  await enterApp(); };
+$("logout").onclick=async()=>{ await client.auth.signOut(); location.reload(); };
+$("refresh").onclick=()=>loadAll(true);
 
-// ── Tabs ────────────────────────────────────────────────────────────
-$("tabs").addEventListener("click", (e) => {
-  const t = e.target.closest(".tab"); if (!t) return;
-  document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
-  t.classList.add("active");
-  ["resumen","usuarios","mensajes","salud","enviar"].forEach(v =>
-    $("v-"+v).classList.toggle("hidden", v !== t.dataset.tab));
+// ── Nav ──
+$("nav").addEventListener("click",e=>{ const t=e.target.closest(".nav-item"); if(!t)return;
+  document.querySelectorAll(".nav-item").forEach(x=>x.classList.toggle("active",x===t));
+  const tab=t.dataset.tab;
+  ["resumen","usuarios","mensajes","salud","enviar"].forEach(v=>$("v-"+v).classList.toggle("hidden",v!==tab));
+  $("page-title").textContent=TITLES[tab];
+  window.scrollTo({top:0,behavior:"instant"});
 });
 
-// ── Charts ──────────────────────────────────────────────────────────
-function destroy(id){ if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
-const xs = s => (s||[]).map(p=>p.x), ys = s => (s||[]).map(p=>p.y);
+// ── Charts ──
+const destroy=id=>{ if(charts[id]){charts[id].destroy(); delete charts[id];} };
+const xs=s=>(s||[]).map(p=>p.x), ys=s=>(s||[]).map(p=>p.y);
+const gridcfg={grid:{color:LINE},ticks:{precision:0}};
 function lineChart(id,s,c){ destroy(id); charts[id]=new Chart($(id),{type:"line",
   data:{labels:xs(s),datasets:[{data:ys(s),borderColor:c,backgroundColor:c+"22",fill:true,tension:.3,pointRadius:3,pointBackgroundColor:c}]},
-  options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:LINE},ticks:{precision:0}}}}}); }
+  options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,...gridcfg}}}}); }
 function barChart(id,s,c,h){ destroy(id); charts[id]=new Chart($(id),{type:"bar",
-  data:{labels:xs(s),datasets:[{data:ys(s),backgroundColor:c,borderRadius:6}]},
-  options:{indexAxis:h?"y":"x",maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{precision:0}},y:{beginAtZero:true,grid:{color:LINE},ticks:{precision:0}}}}}); }
+  data:{labels:xs(s),datasets:[{data:ys(s),backgroundColor:c,borderRadius:6,maxBarThickness:44}]},
+  options:{indexAxis:h?"y":"x",maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},...gridcfg},y:{beginAtZero:true,...gridcfg}}}}); }
 function doughnut(id,s){ destroy(id); charts[id]=new Chart($(id),{type:"doughnut",
-  data:{labels:xs(s),datasets:[{data:ys(s),backgroundColor:s.map((_,i)=>PALETTE[i%PALETTE.length]),borderWidth:0}]},
-  options:{maintainAspectRatio:false,cutout:"58%",plugins:{legend:{position:"bottom",labels:{boxWidth:12,padding:10}}}}}); }
-function kpis(cid,items){ $(cid).innerHTML = items.map(k=>`<div class="kpi"><div class="n">${k.n}</div><div class="l">${k.l}</div></div>`).join(""); }
+  data:{labels:xs(s),datasets:[{data:ys(s),backgroundColor:s.map((_,i)=>PAL[i%PAL.length]),borderWidth:0}]},
+  options:{maintainAspectRatio:false,cutout:"60%",plugins:{legend:{position:"bottom",labels:{boxWidth:11,padding:12,font:{size:11}}}}}}); }
 
-// ── Carga de datos ──────────────────────────────────────────────────
-async function loadAll(){
-  msg($("app-msg"), "");
-  const [ov,co,cm,ci,us,me,sp] = await Promise.all([
-    client.rpc("admin_overview"), client.rpc("admin_conditions"),
-    client.rpc("admin_community"), client.rpc("admin_circles"),
-    client.rpc("admin_users"), client.rpc("admin_messages",{p_limit:300}),
-    client.rpc("admin_shared_profiles"),
-  ]);
-  const err = ov.error||co.error||cm.error||ci.error||us.error||me.error||sp.error;
-  if (err){
-    if (err.code==="42501" || /forbidden/i.test(err.message||"")) msg($("app-msg"),"No autorizado: esta cuenta no es administrador.");
-    else msg($("app-msg"),"No se pudieron cargar los datos: "+(err.message||"error de red")+". Intenta Actualizar.");
+// ── Carga ──
+async function loadAll(isRefresh){
+  banner($("app-msg"),"");
+  const btn=$("refresh"); if(isRefresh){btn.disabled=true;}
+  const [ov,co,cm,ci,us,me,sp]=await Promise.all([
+    client.rpc("admin_overview"),client.rpc("admin_conditions"),client.rpc("admin_community"),
+    client.rpc("admin_circles"),client.rpc("admin_users"),client.rpc("admin_messages",{p_limit:300}),
+    client.rpc("admin_shared_profiles")]);
+  btn.disabled=false;
+  const err=ov.error||co.error||cm.error||ci.error||us.error||me.error||sp.error;
+  if(err){
+    if(err.code==="42501"||/forbidden/i.test(err.message||"")) banner($("app-msg"),"No autorizado: esta cuenta no es administrador.");
+    else banner($("app-msg"),'No se pudieron cargar los datos ('+esc(err.message||"error de red")+'). <a href="#" onclick="loadAll(true);return false">Reintentar</a>');
     return;
   }
   renderResumen(ov.data,co.data,cm.data,ci.data);
-  usersData = us.data||[]; renderUsers();
-  renderMessages(me.data||[]);
-  sharedData = sp.data||[]; renderShared();
+  usersData=us.data||[]; renderUsers(); renderPickList();
+  msgsData=me.data||[]; renderMessages();
+  sharedData=sp.data||[]; renderShared();
   await loadConditions();
+  $("updated").textContent="Actualizado "+new Date().toLocaleTimeString("es-MX",{hour:"2-digit",minute:"2-digit"});
 }
 
+function stat(n,l){ return `<div class="stat"><div class="n num">${n}</div><div class="l">${l}</div></div>`; }
 function renderResumen(o,c,m,r){
-  kpis("kpis-users",[
-    {n:o.total_users,l:"Usuarios con nombre"},{n:o.total_signups,l:"Registros (correo)"},
-    {n:o.total_profiles,l:"Perfiles publicados"},{n:o.active_7d,l:"Activos 7 días"},{n:o.active_30d,l:"Activos 30 días"}]);
+  $("stat-strip").innerHTML=[stat(o.total_users,"Usuarios con nombre"),stat(o.total_signups,"Registros (correo)"),
+    stat(o.total_profiles,"Perfiles publicados"),stat(o.active_7d,"Activos 7 días"),
+    stat((r.push_adoption_pct||0)+"%","Con push"),stat(r.circles,"Círculos")].join("");
   lineChart("c-growth",o.growth_weekly,TERRA); barChart("c-funnel",o.funnel,SAGE,false);
-  kpis("kpis-cond",[{n:(o.total_users?Math.round(o.total_profiles/o.total_users*100):0)+"%",l:"Con perfil publicado"}]);
   doughnut("c-cond",c.distribution); barChart("c-meds",c.top_meds,TERRA,true);
-  kpis("kpis-comm",[{n:m.total_messages,l:"Mensajes"},{n:m.participants,l:"Participantes"},{n:m.reports,l:"Reportes"},{n:m.blocks,l:"Bloqueos"}]);
   lineChart("c-msgs",m.messages_weekly,SAGE); barChart("c-groups",m.top_groups,TERRA,true);
-  kpis("kpis-circ",[{n:r.circles,l:"Círculos"},{n:r.shared_profiles,l:"Perfiles compartidos"},
-    {n:r.invites_sent,l:"Invitaciones"},{n:r.invites_accepted,l:"Aceptadas"},{n:(r.push_adoption_pct||0)+"%",l:"Con push"}]);
   barChart("c-doses",r.doses_weekly,SAGE,false); doughnut("c-plat",r.platforms);
 }
 
-function statusPill(u){
-  if (u.banned) return '<span class="pill warn">baneado</span>';
-  if (u.status && u.status!=="active") return `<span class="pill warn">${esc(u.status)}</span>`;
-  return '<span class="pill ok">activo</span>';
-}
+function statusPill(u){ if(u.banned)return '<span class="pill warn">baneado</span>';
+  if(u.status&&u.status!=="active")return `<span class="pill warn">${esc(u.status)}</span>`;
+  return '<span class="pill ok"><span class="dot"></span>activo</span>'; }
 function renderUsers(){
-  $("users-count").textContent = `(${usersData.length})`;
-  $("users-body").innerHTML = usersData.map(u => `
-    <tr>
-      <td><input type="checkbox" class="chk-user" data-id="${esc(u.id)}" ${selected.has(u.id)?"checked":""}/></td>
-      <td><b>${esc(u.username)}</b></td>
-      <td>${esc(u.email)}</td>
-      <td>${fmtDay(u.created_at)}</td>
-      <td>${statusPill(u)}</td>
-      <td>${u.has_profile?'<span class="pill ok">sí</span>':'<span class="pill no">no</span>'}</td>
-      <td>${(u.conditions||[]).map(esc).join(", ")||"—"}${u.other_condition?" · "+esc(u.other_condition):""}</td>
-      <td>${u.has_push?'<span class="pill ok">'+(u.platforms||[]).join(",")+'</span>':'<span class="pill no">no</span>'}</td>
-      <td>${fmt(u.last_activity)}</td>
-    </tr>`).join("") || `<tr><td colspan="9" class="muted" style="padding:20px;">Sin usuarios.</td></tr>`;
-  document.querySelectorAll(".chk-user").forEach(c => c.onchange = () => {
-    c.checked ? selected.add(c.dataset.id) : selected.delete(c.dataset.id);
-    $("sel-count").textContent = selected.size;
-  });
-  $("sel-count").textContent = selected.size;
+  const q=($("users-search").value||"").toLowerCase();
+  const rows=usersData.filter(u=>!q||(u.username||"").toLowerCase().includes(q)||(u.email||"").toLowerCase().includes(q));
+  $("users-count").textContent=`${rows.length} de ${usersData.length}`;
+  $("users-body").innerHTML=rows.map(u=>`<tr>
+    <td class="strong">${esc(u.username)}</td>
+    <td>${esc(u.email)}</td>
+    <td class="num">${fmtDay(u.created_at)}</td>
+    <td>${statusPill(u)}</td>
+    <td>${u.has_profile?'<span class="pill ok">sí</span>':'<span class="pill no">no</span>'}</td>
+    <td>${(u.conditions||[]).map(esc).join(", ")||"—"}${u.other_condition?" · "+esc(u.other_condition):""}</td>
+    <td>${u.has_push?'<span class="pill ok">'+esc((u.platforms||[]).join(","))+'</span>':'<span class="pill no">no</span>'}</td>
+    <td class="num">${fmt(u.last_activity)}</td></tr>`).join("")
+    || `<tr><td colspan="8" class="empty">Sin resultados.</td></tr>`;
 }
-$("chk-all").onchange = (e) => {
-  usersData.forEach(u => e.target.checked ? selected.add(u.id) : selected.delete(u.id));
-  renderUsers();
-};
+$("users-search").oninput=renderUsers;
 
-function renderMessages(list){
-  $("msgs-count").textContent = `(${list.length})`;
-  $("msgs-list").innerHTML = list.map(m => `
-    <div class="msg">
-      <div class="head">
-        <span><b>${esc(m.username||"—")}</b> · ${esc(m.condition)}</span>
-        <span>${fmt(m.created_at)}${m.hidden?' · <span class="pill warn">oculto</span>':""}${m.report_count>0?' · '+m.report_count+' reporte(s)':""}</span>
-      </div>
-      <div class="body">${esc(m.body)}</div>
-    </div>`).join("") || `<p class="muted">Aún no hay mensajes.</p>`;
+let msgsData=[];
+function renderMessages(){
+  const q=($("msgs-search").value||"").toLowerCase();
+  const rows=msgsData.filter(m=>!q||(m.body||"").toLowerCase().includes(q)||(m.username||"").toLowerCase().includes(q));
+  $("msgs-count").textContent=`${rows.length} de ${msgsData.length}`;
+  $("msgs-list").innerHTML=rows.map(m=>`<div class="msg">
+    <div class="head"><span><span class="who-b">${esc(m.username||"—")}</span> · ${esc(m.condition)}</span>
+    <span>${fmt(m.created_at)}${m.hidden?' · <span class="pill warn">oculto</span>':""}${m.report_count>0?' · '+m.report_count+' reporte(s)':""}</span></div>
+    <div class="body">${esc(m.body)}</div></div>`).join("")
+    || `<div class="empty">Aún no hay mensajes en los grupos de apoyo.</div>`;
 }
+$("msgs-search").oninput=renderMessages;
 
 function renderShared(){
-  $("shared-list").innerHTML = sharedData.map(p => `
-    <button class="card" style="width:100%;text-align:left;cursor:pointer;border:1px solid var(--line);" data-uid="${esc(p.uid)}">
-      <b>${esc(p.patient_name||p.name)}</b>
-      <div class="muted" style="margin-top:4px;">${p.n_readings} signos · ${p.n_doses} tomas · actualizado ${fmt(p.updated_at)}</div>
-    </button>`).join("") || `<p class="muted">No hay perfiles compartidos.</p>`;
-  document.querySelectorAll("#shared-list [data-uid]").forEach(b => b.onclick = () => loadHealth(b.dataset.uid));
+  $("shared-list").innerHTML=sharedData.map(p=>`<button class="rowbtn" data-uid="${esc(p.uid)}">
+    <span><b>${esc(p.patient_name||p.name)}</b><div class="helper" style="margin-top:3px;">${p.n_readings} signos · ${p.n_doses} tomas · actualizado ${fmt(p.updated_at)}</div></span>
+    <svg class="icon chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>`).join("")
+    || `<div class="empty">No hay perfiles compartidos todavía.</div>`;
+  document.querySelectorAll("#shared-list [data-uid]").forEach(b=>b.onclick=()=>loadHealth(b.dataset.uid));
 }
 async function loadHealth(uid){
-  const box = $("health-detail"); show(box);
-  box.innerHTML = `<p class="muted">Cargando…</p>`;
-  const { data, error } = await client.rpc("admin_profile_health", { p_uid: uid });
-  if (error){ box.innerHTML = `<p class="muted">No se pudo cargar.</p>`; return; }
-  const rd = (data.readings||[]).map(r => `<tr><td>${esc(METRIC[r.metric]||r.metric)}</td><td>${r.metric==="bloodPressure"?(r.sys??"?")+"/"+(r.dia??"?"):(r.value??"—")}</td><td>${esc(r.by||"—")}</td><td>${fmt(r.taken_at)}</td></tr>`).join("");
-  const ds = (data.doses||[]).map(d => `<tr><td>${esc(d.med||"—")} ${esc(d.dose||"")} ${esc(d.unit||"")}</td><td>${esc(d.by||"—")}</td><td>${fmt(d.taken_at||d.scheduled_for)}</td></tr>`).join("");
-  box.innerHTML = `
-    <h3 style="margin:0 0 10px;">Signos vitales (${(data.readings||[]).length})</h3>
-    <div class="tablewrap"><table><thead><tr><th>Signo</th><th>Valor</th><th>Registró</th><th>Fecha</th></tr></thead><tbody>${rd||'<tr><td colspan=4 class=muted>Sin signos.</td></tr>'}</tbody></table></div>
-    <h3 style="margin:16px 0 10px;">Tomas de medicina (${(data.doses||[]).length})</h3>
-    <div class="tablewrap"><table><thead><tr><th>Medicina</th><th>Dio</th><th>Fecha</th></tr></thead><tbody>${ds||'<tr><td colspan=3 class=muted>Sin tomas.</td></tr>'}</tbody></table></div>`;
+  const box=$("health-detail"); show(box); box.innerHTML=`<div class="card"><div class="skel" style="height:16px;width:40%;margin-bottom:12px;"></div><div class="skel" style="height:80px;"></div></div>`;
+  const {data,error}=await client.rpc("admin_profile_health",{p_uid:uid});
+  if(error){ box.innerHTML=`<div class="card empty">No se pudo cargar.</div>`; return; }
+  const rd=(data.readings||[]).map(r=>`<tr><td class="strong">${esc(METRIC[r.metric]||r.metric)}</td><td class="num">${r.metric==="bloodPressure"?(r.sys??"?")+"/"+(r.dia??"?"):(r.value??"—")}</td><td>${esc(r.by||"—")}</td><td class="num">${fmt(r.taken_at)}</td></tr>`).join("");
+  const ds=(data.doses||[]).map(d=>`<tr><td class="strong">${esc(d.med||"—")} ${esc(d.dose||"")} ${esc(d.unit||"")}</td><td>${esc(d.by||"—")}</td><td class="num">${fmt(d.taken_at||d.scheduled_for)}</td></tr>`).join("");
+  box.innerHTML=`<div class="card">
+    <h3>Signos vitales (${(data.readings||[]).length})</h3>
+    <div class="tablewrap"><table><thead><tr><th>Signo</th><th>Valor</th><th>Registró</th><th>Fecha</th></tr></thead><tbody>${rd||'<tr><td colspan=4 class=empty>Sin signos registrados.</td></tr>'}</tbody></table></div>
+    <h3 style="margin-top:18px;">Tomas de medicina (${(data.doses||[]).length})</h3>
+    <div class="tablewrap"><table><thead><tr><th>Medicina</th><th>Dio</th><th>Fecha</th></tr></thead><tbody>${ds||'<tr><td colspan=3 class=empty>Sin tomas registradas.</td></tr>'}</tbody></table></div></div>`;
 }
 
 async function loadConditions(){
-  // Catálogo para segmentar el push por padecimiento.
-  const { data } = await client.from("conditions").select("id,name").order("sort");
-  conditionsList = data || [];
-  $("p-condition").innerHTML = conditionsList.map(c => `<option value="${esc(c.id)}">${esc(c.name)}</option>`).join("");
+  const {data}=await client.from("conditions").select("id,name").order("sort");
+  $("p-condition").innerHTML=(data||[]).map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join("");
 }
 
-// ── Enviar aviso ────────────────────────────────────────────────────
-let targetMode = "all";
-$("p-target").addEventListener("click", (e) => {
-  const o = e.target.closest(".radio-opt"); if (!o) return;
-  targetMode = o.dataset.mode;
-  document.querySelectorAll("#p-target .radio-opt").forEach(x => x.classList.toggle("sel", x===o));
-  $("cond-wrap").classList.toggle("hidden", targetMode!=="condition");
-  msg($("p-confirm"),""); hide($("p-result"));
+// ── Composer ──
+$("p-body").oninput=()=>{ $("p-count").textContent=$("p-body").value.length; resetReview(); };
+$("p-title").oninput=resetReview;
+function resetReview(){ hide($("p-review-box")); hide($("p-result")); }
+$("p-target").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b)return;
+  targetMode=b.dataset.mode;
+  document.querySelectorAll("#p-target button").forEach(x=>x.classList.toggle("on",x===b));
+  $("t-all").classList.toggle("hidden",targetMode!=="all");
+  $("t-condition").classList.toggle("hidden",targetMode!=="condition");
+  $("t-selected").classList.toggle("hidden",targetMode!=="selected");
+  resetReview();
 });
+function renderPickList(){
+  const q=($("pick-search").value||"").toLowerCase();
+  const rows=usersData.filter(u=>!q||(u.username||"").toLowerCase().includes(q)||(u.email||"").toLowerCase().includes(q));
+  $("pick-list").innerHTML=rows.map(u=>`<label class="pickrow"><input type="checkbox" data-id="${esc(u.id)}" ${selected.has(u.id)?"checked":""}/>
+    <span><div class="pu">${esc(u.username)}</div><div class="pe">${esc(u.email)}</div></span></label>`).join("")
+    || `<div class="empty" style="padding:18px;">Sin usuarios.</div>`;
+  $("pick-list").querySelectorAll("input").forEach(c=>c.onchange=()=>{
+    c.checked?selected.add(c.dataset.id):selected.delete(c.dataset.id);
+    $("pick-count").textContent=selected.size; resetReview();
+  });
+  $("pick-count").textContent=selected.size;
+}
+$("pick-search").oninput=renderPickList;
+
 function pushTarget(){
-  if (targetMode==="all") return { all:true };
-  if (targetMode==="condition") return { condition_id: $("p-condition").value };
-  return { account_ids: [...selected] };
+  if(targetMode==="all")return {all:true};
+  if(targetMode==="condition")return {condition_id:$("p-condition").value};
+  return {account_ids:[...selected]};
 }
 async function invokePush(extra){
-  const title = $("p-title").value.trim();
-  const body = $("p-body").value.trim();
-  return client.functions.invoke("admin-push", { body: { title, body, ...pushTarget(), ...extra } });
+  return client.functions.invoke("admin-push",{body:{title:$("p-title").value.trim(),body:$("p-body").value.trim(),...pushTarget(),...extra}});
 }
-$("p-preview").onclick = async () => {
-  const body = $("p-body").value.trim();
-  if (!body){ msg($("p-confirm"),"Escribe primero el mensaje."); return; }
-  if (targetMode==="selected" && selected.size===0){ msg($("p-confirm"),"No has seleccionado usuarios en la pestaña «Usuarios»."); return; }
-  $("p-preview").disabled = true; hide($("p-result"));
-  const { data, error } = await invokePush({ dry_run:true });
-  $("p-preview").disabled = false;
-  if (error){ msg($("p-confirm"),"Error: "+error.message); return; }
-  const box = $("p-confirm"); show(box);
-  box.innerHTML = `Se enviará a <b>${data.recipients}</b> persona(s) · <b>${data.tokens}</b> dispositivo(s) con push.
-    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
-      <button id="p-send" class="btn danger">Confirmar y enviar</button>
-      <button id="p-cancel" class="btn ghost">Cancelar</button>
-    </div>`;
-  $("p-cancel").onclick = () => msg(box,"");
-  $("p-send").onclick = async () => {
-    $("p-send").disabled = true; $("p-send").textContent = "Enviando…";
-    const { data:res, error:e2 } = await invokePush({});
-    msg(box,"");
-    const rbox = $("p-result"); show(rbox); rbox.className = "banner";
-    rbox.innerHTML = e2 ? ("Error al enviar: "+esc(e2.message))
-      : `✅ Enviado a <b>${res.sent}</b> dispositivo(s) de ${res.recipients} persona(s).`;
+$("p-review").onclick=async()=>{
+  const body=$("p-body").value.trim();
+  if(!body){ banner($("p-result"),"Escribe primero el mensaje.","error"); return; }
+  if(targetMode==="selected"&&selected.size===0){ banner($("p-result"),"Selecciona al menos un usuario.","error"); return; }
+  $("p-review").disabled=true; hide($("p-result"));
+  const {data,error}=await invokePush({dry_run:true});
+  $("p-review").disabled=false;
+  if(error){ banner($("p-result"),"Error: "+esc(error.message),"error"); return; }
+  const box=$("p-review-box"); show(box);
+  box.innerHTML=`<div class="big">Se enviará a ${data.recipients} persona(s)</div>
+    <div class="helper" style="margin-top:2px;">${data.tokens} dispositivo(s) con push activo · esto no se puede deshacer</div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+      <button id="p-send" class="btn-danger"><svg class="icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Enviar ahora</button>
+      <button id="p-cancel" class="btn-subtle">Cancelar</button></div>`;
+  $("p-cancel").onclick=()=>hide(box);
+  $("p-send").onclick=async()=>{
+    $("p-send").disabled=true; $("p-send").textContent="Enviando…";
+    const {data:res,error:e2}=await invokePush({});
+    hide(box);
+    banner($("p-result"), e2?("Error al enviar: "+esc(e2.message)):`✓ Enviado a ${res.sent} dispositivo(s) de ${res.recipients} persona(s).`, e2?"error":"success");
   };
 };
 
 async function enterApp(){
-  const { data:{ user } } = await client.auth.getUser();
+  const {data:{user}}=await client.auth.getUser();
   hide($("login")); show($("app"));
-  $("whoami").textContent = user ? user.email : "";
-  await loadAll();
+  $("whoami").textContent=user?user.email:"";
+  await loadAll(false);
 }
-(async () => {
-  const { data:{ session } } = await client.auth.getSession();
-  session ? await enterApp() : show($("login"));
-})();
+(async()=>{ const {data:{session}}=await client.auth.getSession(); session?await enterApp():show($("login")); })();
 </script>
 </body>
 </html>

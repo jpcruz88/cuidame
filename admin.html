@@ -14,36 +14,58 @@
   body{margin:0;background:var(--cream);color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased;}
-  header{background:var(--terracota);color:#fff;padding:18px 20px;display:flex;
+  header{background:var(--terracota);color:#fff;padding:16px 20px;display:flex;
     align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
-  header h1{font-size:1.15rem;margin:0;font-weight:800;}
-  header .sub{opacity:.85;font-size:.85rem;margin-top:2px;}
-  .wrap{max-width:1080px;margin:0 auto;padding:20px;}
+  header h1{font-size:1.1rem;margin:0;font-weight:800;}
+  header .sub{opacity:.85;font-size:.82rem;margin-top:2px;}
+  .wrap{max-width:1120px;margin:0 auto;padding:18px 20px 40px;}
   .btn{background:var(--terracota);color:#fff;border:none;border-radius:12px;
-    padding:11px 18px;font-size:.95rem;font-weight:700;cursor:pointer;}
+    padding:10px 16px;font-size:.92rem;font-weight:700;cursor:pointer;}
   .btn:disabled{opacity:.5;cursor:default;}
   .btn.secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.6);}
   .btn.ghost{background:transparent;color:var(--terracota);border:1px solid var(--terracota);}
-  input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;
-    font-size:1rem;background:var(--surface);color:var(--ink);}
-  input:focus{outline:none;border-color:var(--terracota);}
+  .btn.danger{background:#b23b22;}
+  input,textarea,select{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:12px;
+    font-size:1rem;background:var(--surface);color:var(--ink);font-family:inherit;}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--terracota);}
   .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;}
-  .section-title{font-size:1.05rem;font-weight:800;margin:26px 0 12px;}
+  .section-title{font-size:1.05rem;font-weight:800;margin:24px 0 12px;}
   .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;}
   .kpi{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;}
-  .kpi .n{font-size:1.7rem;font-weight:800;color:var(--terracota);line-height:1.1;}
-  .kpi .l{font-size:.82rem;color:var(--muted);margin-top:4px;font-weight:600;}
+  .kpi .n{font-size:1.6rem;font-weight:800;color:var(--terracota);line-height:1.1;}
+  .kpi .l{font-size:.8rem;color:var(--muted);margin-top:4px;font-weight:600;}
   .charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:14px;}
   .chart-card h3{font-size:.95rem;margin:0 0 10px;font-weight:700;}
-  .chart-box{position:relative;height:240px;}
+  .chart-box{position:relative;height:230px;}
   .muted{color:var(--muted);font-size:.9rem;}
-  .center{max-width:400px;margin:8vh auto 0;text-align:left;}
-  .center h2{font-size:1.3rem;margin:0 0 6px;}
+  .center{max-width:400px;margin:8vh auto 0;}
   .stack>*+*{margin-top:12px;}
   .hidden{display:none!important;}
   .banner{background:var(--tint);border:1px solid var(--terracota);border-radius:12px;
     padding:12px 14px;color:#8a3d28;font-size:.9rem;}
-  footer{max-width:1080px;margin:20px auto;padding:0 20px 30px;color:var(--muted);font-size:.8rem;}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);
+    border-radius:14px;padding:6px;margin-bottom:16px;}
+  .tab{flex:1;min-width:90px;text-align:center;padding:9px 10px;border-radius:10px;cursor:pointer;
+    font-size:.9rem;font-weight:700;color:var(--muted);border:none;background:transparent;}
+  .tab.active{background:var(--terracota);color:#fff;}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface);}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap;}
+  th{background:#F6EFE4;color:var(--muted);font-weight:700;position:sticky;top:0;}
+  tr:last-child td{border-bottom:none;}
+  .pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.72rem;font-weight:700;}
+  .pill.ok{background:#E7F0EA;color:var(--sage);}
+  .pill.no{background:#F0E7E3;color:var(--muted);}
+  .pill.warn{background:#FBE7DF;color:var(--terracota);}
+  .msg{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--surface);margin-bottom:10px;}
+  .msg .head{display:flex;justify-content:space-between;gap:8px;font-size:.8rem;color:var(--muted);margin-bottom:5px;flex-wrap:wrap;}
+  .msg .body{font-size:.95rem;}
+  label.field{display:block;font-size:.85rem;font-weight:700;color:var(--muted);margin-bottom:5px;}
+  .radio-row{display:flex;gap:8px;flex-wrap:wrap;}
+  .radio-opt{flex:1;min-width:150px;border:1px solid var(--line);border-radius:12px;padding:11px 12px;
+    cursor:pointer;font-size:.9rem;}
+  .radio-opt.sel{border-color:var(--terracota);background:var(--tint);}
+  footer{max-width:1120px;margin:20px auto;padding:0 20px 30px;color:var(--muted);font-size:.78rem;}
 </style>
 </head>
 <body>
@@ -52,9 +74,8 @@
 <div id="login" class="wrap hidden">
   <div class="center card stack">
     <div>
-      <h2>Panel de administrador</h2>
-      <p class="muted">Solo para el dueño de Cuídame. Entra con el código que
-        llega a tu correo.</p>
+      <h2 style="margin:0 0 6px;">Panel de administrador</h2>
+      <p class="muted">Solo para el dueño de Cuídame. Entra con el código que llega a tu correo.</p>
     </div>
     <div id="step-email" class="stack">
       <input id="email" type="email" inputmode="email" placeholder="tu@correo.com" autocomplete="email" />
@@ -69,7 +90,7 @@
   </div>
 </div>
 
-<!-- ── DASHBOARD ─────────────────────────────────────────────────── -->
+<!-- ── APP ───────────────────────────────────────────────────────── -->
 <div id="app" class="hidden">
   <header>
     <div>
@@ -82,43 +103,103 @@
     </div>
   </header>
   <div class="wrap">
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-tab="resumen">Resumen</button>
+      <button class="tab" data-tab="usuarios">Usuarios</button>
+      <button class="tab" data-tab="mensajes">Mensajes</button>
+      <button class="tab" data-tab="salud">Salud</button>
+      <button class="tab" data-tab="enviar">Enviar aviso</button>
+    </div>
     <div id="app-msg" class="banner hidden" style="margin-bottom:14px;"></div>
 
-    <div class="section-title">Usuarios y crecimiento</div>
-    <div class="kpis" id="kpis-users"></div>
-    <div class="charts">
-      <div class="card chart-card"><h3>Nuevas cuentas por semana</h3><div class="chart-box"><canvas id="c-growth"></canvas></div></div>
-      <div class="card chart-card"><h3>Embudo de registro</h3><div class="chart-box"><canvas id="c-funnel"></canvas></div></div>
-    </div>
+    <!-- RESUMEN -->
+    <section id="v-resumen">
+      <div class="section-title">Usuarios y crecimiento</div>
+      <div class="kpis" id="kpis-users"></div>
+      <div class="charts">
+        <div class="card chart-card"><h3>Nuevas cuentas por semana</h3><div class="chart-box"><canvas id="c-growth"></canvas></div></div>
+        <div class="card chart-card"><h3>Embudo de registro</h3><div class="chart-box"><canvas id="c-funnel"></canvas></div></div>
+      </div>
+      <div class="section-title">Padecimientos</div>
+      <div class="kpis" id="kpis-cond"></div>
+      <div class="charts">
+        <div class="card chart-card"><h3>Distribución</h3><div class="chart-box"><canvas id="c-cond"></canvas></div></div>
+        <div class="card chart-card"><h3>Medicamentos más mencionados</h3><div class="chart-box"><canvas id="c-meds"></canvas></div></div>
+      </div>
+      <div class="section-title">Comunidad</div>
+      <div class="kpis" id="kpis-comm"></div>
+      <div class="charts">
+        <div class="card chart-card"><h3>Mensajes por semana</h3><div class="chart-box"><canvas id="c-msgs"></canvas></div></div>
+        <div class="card chart-card"><h3>Grupos más activos</h3><div class="chart-box"><canvas id="c-groups"></canvas></div></div>
+      </div>
+      <div class="section-title">Círculos y notificaciones</div>
+      <div class="kpis" id="kpis-circ"></div>
+      <div class="charts">
+        <div class="card chart-card"><h3>Tomas compartidas por semana</h3><div class="chart-box"><canvas id="c-doses"></canvas></div></div>
+        <div class="card chart-card"><h3>Plataforma · adopción push</h3><div class="chart-box"><canvas id="c-plat"></canvas></div></div>
+      </div>
+    </section>
 
-    <div class="section-title">Padecimientos</div>
-    <div class="kpis" id="kpis-cond"></div>
-    <div class="charts">
-      <div class="card chart-card"><h3>Distribución de padecimientos</h3><div class="chart-box"><canvas id="c-cond"></canvas></div></div>
-      <div class="card chart-card"><h3>Medicamentos más mencionados</h3><div class="chart-box"><canvas id="c-meds"></canvas></div></div>
-    </div>
+    <!-- USUARIOS -->
+    <section id="v-usuarios" class="hidden">
+      <div class="section-title">Usuarios <span class="muted" id="users-count"></span></div>
+      <p class="muted" style="margin-top:-6px;">Marca casillas para elegir destinatarios de un aviso push (pestaña «Enviar aviso»).</p>
+      <div class="tablewrap">
+        <table id="users-table"><thead><tr>
+          <th><input type="checkbox" id="chk-all" title="Todos" /></th>
+          <th>Usuario</th><th>Correo</th><th>Registrado</th><th>Estado</th>
+          <th>Perfil</th><th>Padecimientos</th><th>Push</th><th>Últ. actividad</th>
+        </tr></thead><tbody id="users-body"></tbody></table>
+      </div>
+    </section>
 
-    <div class="section-title">Comunidad · grupos de apoyo</div>
-    <div class="kpis" id="kpis-comm"></div>
-    <div class="charts">
-      <div class="card chart-card"><h3>Mensajes por semana</h3><div class="chart-box"><canvas id="c-msgs"></canvas></div></div>
-      <div class="card chart-card"><h3>Grupos más activos</h3><div class="chart-box"><canvas id="c-groups"></canvas></div></div>
-    </div>
+    <!-- MENSAJES -->
+    <section id="v-mensajes" class="hidden">
+      <div class="section-title">Mensajes de grupos de apoyo <span class="muted" id="msgs-count"></span></div>
+      <div id="msgs-list"></div>
+    </section>
 
-    <div class="section-title">Círculos de cuidado</div>
-    <div class="kpis" id="kpis-circ"></div>
-    <div class="charts">
-      <div class="card chart-card"><h3>Tomas compartidas por semana</h3><div class="chart-box"><canvas id="c-doses"></canvas></div></div>
-    </div>
+    <!-- SALUD -->
+    <section id="v-salud" class="hidden">
+      <div class="section-title">Perfiles compartidos</div>
+      <p class="muted" style="margin-top:-6px;">Datos de salud de los pacientes compartidos en círculos de cuidado.</p>
+      <div id="shared-list" class="stack"></div>
+      <div id="health-detail" class="card hidden" style="margin-top:14px;"></div>
+    </section>
 
-    <div class="section-title">Notificaciones</div>
-    <div class="kpis" id="kpis-push"></div>
-    <div class="charts">
-      <div class="card chart-card"><h3>Plataforma de los dispositivos</h3><div class="chart-box"><canvas id="c-plat"></canvas></div></div>
-    </div>
+    <!-- ENVIAR AVISO -->
+    <section id="v-enviar" class="hidden">
+      <div class="section-title">Enviar notificación push</div>
+      <div class="card stack" style="max-width:620px;">
+        <div>
+          <label class="field">Título</label>
+          <input id="p-title" type="text" placeholder="Cuídame" maxlength="80" />
+        </div>
+        <div>
+          <label class="field">Mensaje</label>
+          <textarea id="p-body" rows="3" placeholder="Escribe el aviso…" maxlength="300"></textarea>
+        </div>
+        <div>
+          <label class="field">¿A quién?</label>
+          <div class="radio-row" id="p-target">
+            <div class="radio-opt sel" data-mode="all">Todos los usuarios</div>
+            <div class="radio-opt" data-mode="selected">Seleccionados (<span id="sel-count">0</span>)</div>
+            <div class="radio-opt" data-mode="condition">Por padecimiento</div>
+          </div>
+        </div>
+        <div id="cond-wrap" class="hidden">
+          <label class="field">Padecimiento</label>
+          <select id="p-condition"></select>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button id="p-preview" class="btn ghost">Previsualizar destinatarios</button>
+        </div>
+        <div id="p-confirm" class="banner hidden"></div>
+        <div id="p-result" class="hidden"></div>
+      </div>
+    </section>
   </div>
-  <footer>Datos agregados en vivo. No se muestran datos de salud individuales de
-    usuarios que no compartieron su perfil.</footer>
+  <footer>Panel privado del dueño. Datos en vivo. Los avisos push llegan a los dispositivos reales de los usuarios.</footer>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -129,22 +210,27 @@ const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 const PALETTE = ["#CF6A4C","#5E8B6A","#E0A87E","#7FA88B","#C98A6A","#A7C3B0","#8A7E70","#D4B08C","#B5745A","#93B79F"];
-const INK = "#2E2823", MUTED = "#8A7E70", LINE = "#ECE3D6", TERRA = "#CF6A4C", SAGE = "#5E8B6A";
+const LINE = "#ECE3D6", TERRA = "#CF6A4C", SAGE = "#5E8B6A", MUTED = "#8A7E70";
+const METRIC = {bloodPressure:"Presión",glucose:"Glucosa",temperature:"Temperatura",spo2:"Oxigenación",
+  heartRate:"Frec. cardíaca",respiratoryRate:"Frec. respiratoria",pain:"Dolor",weight:"Peso"};
 Chart.defaults.font.family = "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif";
 Chart.defaults.color = MUTED;
 
 const $ = (id) => document.getElementById(id);
 const charts = {};
 let email = "";
+let usersData = [], sharedData = [], conditionsList = [], selected = new Set();
 
 function show(el){ el.classList.remove("hidden"); }
 function hide(el){ el.classList.add("hidden"); }
 function msg(el, text){ el.textContent = text; text ? show(el) : hide(el); }
+function esc(s){ return (s==null?"":String(s)).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])); }
+function fmt(iso){ if(!iso) return "—"; try{ return new Date(iso).toLocaleString("es-MX",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}); }catch(e){ return iso; } }
+function fmtDay(iso){ if(!iso) return "—"; try{ return new Date(iso).toLocaleDateString("es-MX",{day:"2-digit",month:"short",year:"numeric"}); }catch(e){ return iso; } }
 
 // ── Auth ────────────────────────────────────────────────────────────
 $("send").onclick = async () => {
-  email = $("email").value.trim();
-  if (!email) return;
+  email = $("email").value.trim(); if (!email) return;
   $("send").disabled = true; msg($("login-msg"), "");
   const { error } = await client.auth.signInWithOtp({ email, options:{ shouldCreateUser:false } });
   $("send").disabled = false;
@@ -153,8 +239,7 @@ $("send").onclick = async () => {
 };
 $("back").onclick = () => { show($("step-email")); hide($("step-code")); msg($("login-msg"),""); };
 $("verify").onclick = async () => {
-  const token = $("code").value.trim();
-  if (!token) return;
+  const token = $("code").value.trim(); if (!token) return;
   $("verify").disabled = true; msg($("login-msg"), "");
   const { error } = await client.auth.verifyOtp({ email, token, type:"email" });
   $("verify").disabled = false;
@@ -164,103 +249,179 @@ $("verify").onclick = async () => {
 $("logout").onclick = async () => { await client.auth.signOut(); location.reload(); };
 $("refresh").onclick = () => loadAll();
 
+// ── Tabs ────────────────────────────────────────────────────────────
+$("tabs").addEventListener("click", (e) => {
+  const t = e.target.closest(".tab"); if (!t) return;
+  document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
+  t.classList.add("active");
+  ["resumen","usuarios","mensajes","salud","enviar"].forEach(v =>
+    $("v-"+v).classList.toggle("hidden", v !== t.dataset.tab));
+});
+
 // ── Charts ──────────────────────────────────────────────────────────
 function destroy(id){ if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
-function xs(series){ return (series||[]).map(p => p.x); }
-function ys(series){ return (series||[]).map(p => p.y); }
-
-function lineChart(id, series, color){
-  destroy(id);
-  charts[id] = new Chart($(id), {
-    type:"line",
-    data:{ labels: xs(series), datasets:[{ data: ys(series), borderColor:color,
-      backgroundColor:color+"22", fill:true, tension:.3, pointRadius:3, pointBackgroundColor:color }]},
-    options:{ maintainAspectRatio:false, plugins:{legend:{display:false}},
-      scales:{ x:{grid:{display:false}}, y:{beginAtZero:true, grid:{color:LINE}, ticks:{precision:0}} } }
-  });
-}
-function barChart(id, series, color, horizontal){
-  destroy(id);
-  charts[id] = new Chart($(id), {
-    type:"bar",
-    data:{ labels: xs(series), datasets:[{ data: ys(series), backgroundColor:color, borderRadius:6 }]},
-    options:{ indexAxis: horizontal ? "y" : "x", maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
-      scales:{ x:{grid:{display:false}, ticks:{precision:0}}, y:{beginAtZero:true, grid:{color:LINE}, ticks:{precision:0}} } }
-  });
-}
-function doughnut(id, series){
-  destroy(id);
-  charts[id] = new Chart($(id), {
-    type:"doughnut",
-    data:{ labels: xs(series), datasets:[{ data: ys(series),
-      backgroundColor: series.map((_,i)=>PALETTE[i%PALETTE.length]), borderWidth:0 }]},
-    options:{ maintainAspectRatio:false, cutout:"58%",
-      plugins:{legend:{position:"bottom", labels:{boxWidth:12,padding:12}}} }
-  });
-}
-function kpis(containerId, items){
-  $(containerId).innerHTML = items.map(k =>
-    `<div class="kpi"><div class="n">${k.n}</div><div class="l">${k.l}</div></div>`).join("");
-}
+const xs = s => (s||[]).map(p=>p.x), ys = s => (s||[]).map(p=>p.y);
+function lineChart(id,s,c){ destroy(id); charts[id]=new Chart($(id),{type:"line",
+  data:{labels:xs(s),datasets:[{data:ys(s),borderColor:c,backgroundColor:c+"22",fill:true,tension:.3,pointRadius:3,pointBackgroundColor:c}]},
+  options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:LINE},ticks:{precision:0}}}}}); }
+function barChart(id,s,c,h){ destroy(id); charts[id]=new Chart($(id),{type:"bar",
+  data:{labels:xs(s),datasets:[{data:ys(s),backgroundColor:c,borderRadius:6}]},
+  options:{indexAxis:h?"y":"x",maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{precision:0}},y:{beginAtZero:true,grid:{color:LINE},ticks:{precision:0}}}}}); }
+function doughnut(id,s){ destroy(id); charts[id]=new Chart($(id),{type:"doughnut",
+  data:{labels:xs(s),datasets:[{data:ys(s),backgroundColor:s.map((_,i)=>PALETTE[i%PALETTE.length]),borderWidth:0}]},
+  options:{maintainAspectRatio:false,cutout:"58%",plugins:{legend:{position:"bottom",labels:{boxWidth:12,padding:10}}}}}); }
+function kpis(cid,items){ $(cid).innerHTML = items.map(k=>`<div class="kpi"><div class="n">${k.n}</div><div class="l">${k.l}</div></div>`).join(""); }
 
 // ── Carga de datos ──────────────────────────────────────────────────
 async function loadAll(){
   msg($("app-msg"), "");
-  const [ov, co, cm, ci] = await Promise.all([
+  const [ov,co,cm,ci,us,me,sp] = await Promise.all([
     client.rpc("admin_overview"), client.rpc("admin_conditions"),
     client.rpc("admin_community"), client.rpc("admin_circles"),
+    client.rpc("admin_users"), client.rpc("admin_messages",{p_limit:300}),
+    client.rpc("admin_shared_profiles"),
   ]);
-  const err = ov.error || co.error || cm.error || ci.error;
+  const err = ov.error||co.error||cm.error||ci.error||us.error||me.error||sp.error;
   if (err){
-    if ((err.code === "42501") || /forbidden/i.test(err.message||"")){
-      msg($("app-msg"), "No autorizado: esta cuenta no es administrador.");
-    } else {
-      msg($("app-msg"), "No se pudieron cargar los datos: " + (err.message||"error de red") + ". Intenta Actualizar.");
-    }
+    if (err.code==="42501" || /forbidden/i.test(err.message||"")) msg($("app-msg"),"No autorizado: esta cuenta no es administrador.");
+    else msg($("app-msg"),"No se pudieron cargar los datos: "+(err.message||"error de red")+". Intenta Actualizar.");
     return;
   }
-  const o = ov.data, c = co.data, m = cm.data, r = ci.data;
-
-  // A. Usuarios
-  kpis("kpis-users", [
-    {n:o.total_users, l:"Usuarios con nombre"},
-    {n:o.total_signups, l:"Registros (correo)"},
-    {n:o.total_profiles, l:"Perfiles publicados"},
-    {n:o.active_7d, l:"Activos 7 días"},
-    {n:o.active_30d, l:"Activos 30 días"},
-  ]);
-  lineChart("c-growth", o.growth_weekly, TERRA);
-  barChart("c-funnel", o.funnel, SAGE, false);
-
-  // B. Padecimientos
-  kpis("kpis-cond", [{n:(o.total_users? Math.round(o.total_profiles/o.total_users*100):0)+"%", l:"Con perfil publicado"}]);
-  doughnut("c-cond", c.distribution);
-  barChart("c-meds", c.top_meds, TERRA, true);
-
-  // C. Comunidad
-  kpis("kpis-comm", [
-    {n:m.total_messages, l:"Mensajes"},
-    {n:m.participants, l:"Participantes"},
-    {n:m.reports, l:"Reportes"},
-    {n:m.blocks, l:"Bloqueos"},
-  ]);
-  lineChart("c-msgs", m.messages_weekly, SAGE);
-  barChart("c-groups", m.top_groups, TERRA, true);
-
-  // D. Círculos
-  kpis("kpis-circ", [
-    {n:r.circles, l:"Círculos de cuidado"},
-    {n:r.shared_profiles, l:"Perfiles compartidos"},
-    {n:r.invites_sent, l:"Invitaciones enviadas"},
-    {n:r.invites_accepted, l:"Invitaciones aceptadas"},
-  ]);
-  barChart("c-doses", r.doses_weekly, SAGE, false);
-
-  // E. Notificaciones
-  kpis("kpis-push", [{n:(r.push_adoption_pct||0)+"%", l:"Usuarios con push"}]);
-  doughnut("c-plat", r.platforms);
+  renderResumen(ov.data,co.data,cm.data,ci.data);
+  usersData = us.data||[]; renderUsers();
+  renderMessages(me.data||[]);
+  sharedData = sp.data||[]; renderShared();
+  await loadConditions();
 }
+
+function renderResumen(o,c,m,r){
+  kpis("kpis-users",[
+    {n:o.total_users,l:"Usuarios con nombre"},{n:o.total_signups,l:"Registros (correo)"},
+    {n:o.total_profiles,l:"Perfiles publicados"},{n:o.active_7d,l:"Activos 7 días"},{n:o.active_30d,l:"Activos 30 días"}]);
+  lineChart("c-growth",o.growth_weekly,TERRA); barChart("c-funnel",o.funnel,SAGE,false);
+  kpis("kpis-cond",[{n:(o.total_users?Math.round(o.total_profiles/o.total_users*100):0)+"%",l:"Con perfil publicado"}]);
+  doughnut("c-cond",c.distribution); barChart("c-meds",c.top_meds,TERRA,true);
+  kpis("kpis-comm",[{n:m.total_messages,l:"Mensajes"},{n:m.participants,l:"Participantes"},{n:m.reports,l:"Reportes"},{n:m.blocks,l:"Bloqueos"}]);
+  lineChart("c-msgs",m.messages_weekly,SAGE); barChart("c-groups",m.top_groups,TERRA,true);
+  kpis("kpis-circ",[{n:r.circles,l:"Círculos"},{n:r.shared_profiles,l:"Perfiles compartidos"},
+    {n:r.invites_sent,l:"Invitaciones"},{n:r.invites_accepted,l:"Aceptadas"},{n:(r.push_adoption_pct||0)+"%",l:"Con push"}]);
+  barChart("c-doses",r.doses_weekly,SAGE,false); doughnut("c-plat",r.platforms);
+}
+
+function statusPill(u){
+  if (u.banned) return '<span class="pill warn">baneado</span>';
+  if (u.status && u.status!=="active") return `<span class="pill warn">${esc(u.status)}</span>`;
+  return '<span class="pill ok">activo</span>';
+}
+function renderUsers(){
+  $("users-count").textContent = `(${usersData.length})`;
+  $("users-body").innerHTML = usersData.map(u => `
+    <tr>
+      <td><input type="checkbox" class="chk-user" data-id="${esc(u.id)}" ${selected.has(u.id)?"checked":""}/></td>
+      <td><b>${esc(u.username)}</b></td>
+      <td>${esc(u.email)}</td>
+      <td>${fmtDay(u.created_at)}</td>
+      <td>${statusPill(u)}</td>
+      <td>${u.has_profile?'<span class="pill ok">sí</span>':'<span class="pill no">no</span>'}</td>
+      <td>${(u.conditions||[]).map(esc).join(", ")||"—"}${u.other_condition?" · "+esc(u.other_condition):""}</td>
+      <td>${u.has_push?'<span class="pill ok">'+(u.platforms||[]).join(",")+'</span>':'<span class="pill no">no</span>'}</td>
+      <td>${fmt(u.last_activity)}</td>
+    </tr>`).join("") || `<tr><td colspan="9" class="muted" style="padding:20px;">Sin usuarios.</td></tr>`;
+  document.querySelectorAll(".chk-user").forEach(c => c.onchange = () => {
+    c.checked ? selected.add(c.dataset.id) : selected.delete(c.dataset.id);
+    $("sel-count").textContent = selected.size;
+  });
+  $("sel-count").textContent = selected.size;
+}
+$("chk-all").onchange = (e) => {
+  usersData.forEach(u => e.target.checked ? selected.add(u.id) : selected.delete(u.id));
+  renderUsers();
+};
+
+function renderMessages(list){
+  $("msgs-count").textContent = `(${list.length})`;
+  $("msgs-list").innerHTML = list.map(m => `
+    <div class="msg">
+      <div class="head">
+        <span><b>${esc(m.username||"—")}</b> · ${esc(m.condition)}</span>
+        <span>${fmt(m.created_at)}${m.hidden?' · <span class="pill warn">oculto</span>':""}${m.report_count>0?' · '+m.report_count+' reporte(s)':""}</span>
+      </div>
+      <div class="body">${esc(m.body)}</div>
+    </div>`).join("") || `<p class="muted">Aún no hay mensajes.</p>`;
+}
+
+function renderShared(){
+  $("shared-list").innerHTML = sharedData.map(p => `
+    <button class="card" style="width:100%;text-align:left;cursor:pointer;border:1px solid var(--line);" data-uid="${esc(p.uid)}">
+      <b>${esc(p.patient_name||p.name)}</b>
+      <div class="muted" style="margin-top:4px;">${p.n_readings} signos · ${p.n_doses} tomas · actualizado ${fmt(p.updated_at)}</div>
+    </button>`).join("") || `<p class="muted">No hay perfiles compartidos.</p>`;
+  document.querySelectorAll("#shared-list [data-uid]").forEach(b => b.onclick = () => loadHealth(b.dataset.uid));
+}
+async function loadHealth(uid){
+  const box = $("health-detail"); show(box);
+  box.innerHTML = `<p class="muted">Cargando…</p>`;
+  const { data, error } = await client.rpc("admin_profile_health", { p_uid: uid });
+  if (error){ box.innerHTML = `<p class="muted">No se pudo cargar.</p>`; return; }
+  const rd = (data.readings||[]).map(r => `<tr><td>${esc(METRIC[r.metric]||r.metric)}</td><td>${r.metric==="bloodPressure"?(r.sys??"?")+"/"+(r.dia??"?"):(r.value??"—")}</td><td>${esc(r.by||"—")}</td><td>${fmt(r.taken_at)}</td></tr>`).join("");
+  const ds = (data.doses||[]).map(d => `<tr><td>${esc(d.med||"—")} ${esc(d.dose||"")} ${esc(d.unit||"")}</td><td>${esc(d.by||"—")}</td><td>${fmt(d.taken_at||d.scheduled_for)}</td></tr>`).join("");
+  box.innerHTML = `
+    <h3 style="margin:0 0 10px;">Signos vitales (${(data.readings||[]).length})</h3>
+    <div class="tablewrap"><table><thead><tr><th>Signo</th><th>Valor</th><th>Registró</th><th>Fecha</th></tr></thead><tbody>${rd||'<tr><td colspan=4 class=muted>Sin signos.</td></tr>'}</tbody></table></div>
+    <h3 style="margin:16px 0 10px;">Tomas de medicina (${(data.doses||[]).length})</h3>
+    <div class="tablewrap"><table><thead><tr><th>Medicina</th><th>Dio</th><th>Fecha</th></tr></thead><tbody>${ds||'<tr><td colspan=3 class=muted>Sin tomas.</td></tr>'}</tbody></table></div>`;
+}
+
+async function loadConditions(){
+  // Catálogo para segmentar el push por padecimiento.
+  const { data } = await client.from("conditions").select("id,name").order("sort");
+  conditionsList = data || [];
+  $("p-condition").innerHTML = conditionsList.map(c => `<option value="${esc(c.id)}">${esc(c.name)}</option>`).join("");
+}
+
+// ── Enviar aviso ────────────────────────────────────────────────────
+let targetMode = "all";
+$("p-target").addEventListener("click", (e) => {
+  const o = e.target.closest(".radio-opt"); if (!o) return;
+  targetMode = o.dataset.mode;
+  document.querySelectorAll("#p-target .radio-opt").forEach(x => x.classList.toggle("sel", x===o));
+  $("cond-wrap").classList.toggle("hidden", targetMode!=="condition");
+  msg($("p-confirm"),""); hide($("p-result"));
+});
+function pushTarget(){
+  if (targetMode==="all") return { all:true };
+  if (targetMode==="condition") return { condition_id: $("p-condition").value };
+  return { account_ids: [...selected] };
+}
+async function invokePush(extra){
+  const title = $("p-title").value.trim();
+  const body = $("p-body").value.trim();
+  return client.functions.invoke("admin-push", { body: { title, body, ...pushTarget(), ...extra } });
+}
+$("p-preview").onclick = async () => {
+  const body = $("p-body").value.trim();
+  if (!body){ msg($("p-confirm"),"Escribe primero el mensaje."); return; }
+  if (targetMode==="selected" && selected.size===0){ msg($("p-confirm"),"No has seleccionado usuarios en la pestaña «Usuarios»."); return; }
+  $("p-preview").disabled = true; hide($("p-result"));
+  const { data, error } = await invokePush({ dry_run:true });
+  $("p-preview").disabled = false;
+  if (error){ msg($("p-confirm"),"Error: "+error.message); return; }
+  const box = $("p-confirm"); show(box);
+  box.innerHTML = `Se enviará a <b>${data.recipients}</b> persona(s) · <b>${data.tokens}</b> dispositivo(s) con push.
+    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+      <button id="p-send" class="btn danger">Confirmar y enviar</button>
+      <button id="p-cancel" class="btn ghost">Cancelar</button>
+    </div>`;
+  $("p-cancel").onclick = () => msg(box,"");
+  $("p-send").onclick = async () => {
+    $("p-send").disabled = true; $("p-send").textContent = "Enviando…";
+    const { data:res, error:e2 } = await invokePush({});
+    msg(box,"");
+    const rbox = $("p-result"); show(rbox); rbox.className = "banner";
+    rbox.innerHTML = e2 ? ("Error al enviar: "+esc(e2.message))
+      : `✅ Enviado a <b>${res.sent}</b> dispositivo(s) de ${res.recipients} persona(s).`;
+  };
+};
 
 async function enterApp(){
   const { data:{ user } } = await client.auth.getUser();
@@ -268,12 +429,9 @@ async function enterApp(){
   $("whoami").textContent = user ? user.email : "";
   await loadAll();
 }
-
-// ── Arranque ────────────────────────────────────────────────────────
 (async () => {
   const { data:{ session } } = await client.auth.getSession();
-  if (session) { await enterApp(); }
-  else { show($("login")); }
+  session ? await enterApp() : show($("login"));
 })();
 </script>
 </body>

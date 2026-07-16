@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Cuídame · Panel de administrador</title>
+<style>
+  :root{
+    --cream:#FBF6EF; --surface:#FFFFFF; --ink:#2E2823; --muted:#8A7E70;
+    --line:#ECE3D6; --terracota:#CF6A4C; --sage:#5E8B6A; --tint:#FBEDE6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;}
+  header{background:var(--terracota);color:#fff;padding:18px 20px;display:flex;
+    align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  header h1{font-size:1.15rem;margin:0;font-weight:800;}
+  header .sub{opacity:.85;font-size:.85rem;margin-top:2px;}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px;}
+  .btn{background:var(--terracota);color:#fff;border:none;border-radius:12px;
+    padding:11px 18px;font-size:.95rem;font-weight:700;cursor:pointer;}
+  .btn:disabled{opacity:.5;cursor:default;}
+  .btn.secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.6);}
+  .btn.ghost{background:transparent;color:var(--terracota);border:1px solid var(--terracota);}
+  input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;
+    font-size:1rem;background:var(--surface);color:var(--ink);}
+  input:focus{outline:none;border-color:var(--terracota);}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;}
+  .section-title{font-size:1.05rem;font-weight:800;margin:26px 0 12px;}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;}
+  .kpi .n{font-size:1.7rem;font-weight:800;color:var(--terracota);line-height:1.1;}
+  .kpi .l{font-size:.82rem;color:var(--muted);margin-top:4px;font-weight:600;}
+  .charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:14px;}
+  .chart-card h3{font-size:.95rem;margin:0 0 10px;font-weight:700;}
+  .chart-box{position:relative;height:240px;}
+  .muted{color:var(--muted);font-size:.9rem;}
+  .center{max-width:400px;margin:8vh auto 0;text-align:left;}
+  .center h2{font-size:1.3rem;margin:0 0 6px;}
+  .stack>*+*{margin-top:12px;}
+  .hidden{display:none!important;}
+  .banner{background:var(--tint);border:1px solid var(--terracota);border-radius:12px;
+    padding:12px 14px;color:#8a3d28;font-size:.9rem;}
+  footer{max-width:1080px;margin:20px auto;padding:0 20px 30px;color:var(--muted);font-size:.8rem;}
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ─────────────────────────────────────────────────────── -->
+<div id="login" class="wrap hidden">
+  <div class="center card stack">
+    <div>
+      <h2>Panel de administrador</h2>
+      <p class="muted">Solo para el dueño de Cuídame. Entra con el código que
+        llega a tu correo.</p>
+    </div>
+    <div id="step-email" class="stack">
+      <input id="email" type="email" inputmode="email" placeholder="tu@correo.com" autocomplete="email" />
+      <button id="send" class="btn">Enviar código</button>
+    </div>
+    <div id="step-code" class="stack hidden">
+      <input id="code" type="text" inputmode="numeric" placeholder="Código de 6 dígitos" autocomplete="one-time-code" />
+      <button id="verify" class="btn">Entrar</button>
+      <button id="back" class="btn ghost">Usar otro correo</button>
+    </div>
+    <div id="login-msg" class="banner hidden"></div>
+  </div>
+</div>
+
+<!-- ── DASHBOARD ─────────────────────────────────────────────────── -->
+<div id="app" class="hidden">
+  <header>
+    <div>
+      <h1>Cuídame · Administrador</h1>
+      <div class="sub" id="whoami"></div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button id="refresh" class="btn secondary">Actualizar</button>
+      <button id="logout" class="btn secondary">Salir</button>
+    </div>
+  </header>
+  <div class="wrap">
+    <div id="app-msg" class="banner hidden" style="margin-bottom:14px;"></div>
+
+    <div class="section-title">Usuarios y crecimiento</div>
+    <div class="kpis" id="kpis-users"></div>
+    <div class="charts">
+      <div class="card chart-card"><h3>Nuevas cuentas por semana</h3><div class="chart-box"><canvas id="c-growth"></canvas></div></div>
+      <div class="card chart-card"><h3>Embudo de registro</h3><div class="chart-box"><canvas id="c-funnel"></canvas></div></div>
+    </div>
+
+    <div class="section-title">Padecimientos</div>
+    <div class="kpis" id="kpis-cond"></div>
+    <div class="charts">
+      <div class="card chart-card"><h3>Distribución de padecimientos</h3><div class="chart-box"><canvas id="c-cond"></canvas></div></div>
+      <div class="card chart-card"><h3>Medicamentos más mencionados</h3><div class="chart-box"><canvas id="c-meds"></canvas></div></div>
+    </div>
+
+    <div class="section-title">Comunidad · grupos de apoyo</div>
+    <div class="kpis" id="kpis-comm"></div>
+    <div class="charts">
+      <div class="card chart-card"><h3>Mensajes por semana</h3><div class="chart-box"><canvas id="c-msgs"></canvas></div></div>
+      <div class="card chart-card"><h3>Grupos más activos</h3><div class="chart-box"><canvas id="c-groups"></canvas></div></div>
+    </div>
+
+    <div class="section-title">Círculos de cuidado</div>
+    <div class="kpis" id="kpis-circ"></div>
+    <div class="charts">
+      <div class="card chart-card"><h3>Tomas compartidas por semana</h3><div class="chart-box"><canvas id="c-doses"></canvas></div></div>
+    </div>
+
+    <div class="section-title">Notificaciones</div>
+    <div class="kpis" id="kpis-push"></div>
+    <div class="charts">
+      <div class="card chart-card"><h3>Plataforma de los dispositivos</h3><div class="chart-box"><canvas id="c-plat"></canvas></div></div>
+    </div>
+  </div>
+  <footer>Datos agregados en vivo. No se muestran datos de salud individuales de
+    usuarios que no compartieron su perfil.</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+const SUPABASE_URL = "https://ebvfbcrqhcwrzkbljqsr.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVidmZiY3JxaGN3cnprYmxqcXNyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4NzA0OTAsImV4cCI6MjA5ODQ0NjQ5MH0.e3F5H_vdsSQ16CBkZRZIDvBWZNdWrD2l6oY8fyZAvfk";
+const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+const PALETTE = ["#CF6A4C","#5E8B6A","#E0A87E","#7FA88B","#C98A6A","#A7C3B0","#8A7E70","#D4B08C","#B5745A","#93B79F"];
+const INK = "#2E2823", MUTED = "#8A7E70", LINE = "#ECE3D6", TERRA = "#CF6A4C", SAGE = "#5E8B6A";
+Chart.defaults.font.family = "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif";
+Chart.defaults.color = MUTED;
+
+const $ = (id) => document.getElementById(id);
+const charts = {};
+let email = "";
+
+function show(el){ el.classList.remove("hidden"); }
+function hide(el){ el.classList.add("hidden"); }
+function msg(el, text){ el.textContent = text; text ? show(el) : hide(el); }
+
+// ── Auth ────────────────────────────────────────────────────────────
+$("send").onclick = async () => {
+  email = $("email").value.trim();
+  if (!email) return;
+  $("send").disabled = true; msg($("login-msg"), "");
+  const { error } = await client.auth.signInWithOtp({ email, options:{ shouldCreateUser:false } });
+  $("send").disabled = false;
+  if (error) { msg($("login-msg"), "No se pudo enviar el código: " + error.message); return; }
+  hide($("step-email")); show($("step-code"));
+};
+$("back").onclick = () => { show($("step-email")); hide($("step-code")); msg($("login-msg"),""); };
+$("verify").onclick = async () => {
+  const token = $("code").value.trim();
+  if (!token) return;
+  $("verify").disabled = true; msg($("login-msg"), "");
+  const { error } = await client.auth.verifyOtp({ email, token, type:"email" });
+  $("verify").disabled = false;
+  if (error) { msg($("login-msg"), "Código incorrecto o expirado."); return; }
+  await enterApp();
+};
+$("logout").onclick = async () => { await client.auth.signOut(); location.reload(); };
+$("refresh").onclick = () => loadAll();
+
+// ── Charts ──────────────────────────────────────────────────────────
+function destroy(id){ if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
+function xs(series){ return (series||[]).map(p => p.x); }
+function ys(series){ return (series||[]).map(p => p.y); }
+
+function lineChart(id, series, color){
+  destroy(id);
+  charts[id] = new Chart($(id), {
+    type:"line",
+    data:{ labels: xs(series), datasets:[{ data: ys(series), borderColor:color,
+      backgroundColor:color+"22", fill:true, tension:.3, pointRadius:3, pointBackgroundColor:color }]},
+    options:{ maintainAspectRatio:false, plugins:{legend:{display:false}},
+      scales:{ x:{grid:{display:false}}, y:{beginAtZero:true, grid:{color:LINE}, ticks:{precision:0}} } }
+  });
+}
+function barChart(id, series, color, horizontal){
+  destroy(id);
+  charts[id] = new Chart($(id), {
+    type:"bar",
+    data:{ labels: xs(series), datasets:[{ data: ys(series), backgroundColor:color, borderRadius:6 }]},
+    options:{ indexAxis: horizontal ? "y" : "x", maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{ x:{grid:{display:false}, ticks:{precision:0}}, y:{beginAtZero:true, grid:{color:LINE}, ticks:{precision:0}} } }
+  });
+}
+function doughnut(id, series){
+  destroy(id);
+  charts[id] = new Chart($(id), {
+    type:"doughnut",
+    data:{ labels: xs(series), datasets:[{ data: ys(series),
+      backgroundColor: series.map((_,i)=>PALETTE[i%PALETTE.length]), borderWidth:0 }]},
+    options:{ maintainAspectRatio:false, cutout:"58%",
+      plugins:{legend:{position:"bottom", labels:{boxWidth:12,padding:12}}} }
+  });
+}
+function kpis(containerId, items){
+  $(containerId).innerHTML = items.map(k =>
+    `<div class="kpi"><div class="n">${k.n}</div><div class="l">${k.l}</div></div>`).join("");
+}
+
+// ── Carga de datos ──────────────────────────────────────────────────
+async function loadAll(){
+  msg($("app-msg"), "");
+  const [ov, co, cm, ci] = await Promise.all([
+    client.rpc("admin_overview"), client.rpc("admin_conditions"),
+    client.rpc("admin_community"), client.rpc("admin_circles"),
+  ]);
+  const err = ov.error || co.error || cm.error || ci.error;
+  if (err){
+    if ((err.code === "42501") || /forbidden/i.test(err.message||"")){
+      msg($("app-msg"), "No autorizado: esta cuenta no es administrador.");
+    } else {
+      msg($("app-msg"), "No se pudieron cargar los datos: " + (err.message||"error de red") + ". Intenta Actualizar.");
+    }
+    return;
+  }
+  const o = ov.data, c = co.data, m = cm.data, r = ci.data;
+
+  // A. Usuarios
+  kpis("kpis-users", [
+    {n:o.total_users, l:"Usuarios con nombre"},
+    {n:o.total_signups, l:"Registros (correo)"},
+    {n:o.total_profiles, l:"Perfiles publicados"},
+    {n:o.active_7d, l:"Activos 7 días"},
+    {n:o.active_30d, l:"Activos 30 días"},
+  ]);
+  lineChart("c-growth", o.growth_weekly, TERRA);
+  barChart("c-funnel", o.funnel, SAGE, false);
+
+  // B. Padecimientos
+  kpis("kpis-cond", [{n:(o.total_users? Math.round(o.total_profiles/o.total_users*100):0)+"%", l:"Con perfil publicado"}]);
+  doughnut("c-cond", c.distribution);
+  barChart("c-meds", c.top_meds, TERRA, true);
+
+  // C. Comunidad
+  kpis("kpis-comm", [
+    {n:m.total_messages, l:"Mensajes"},
+    {n:m.participants, l:"Participantes"},
+    {n:m.reports, l:"Reportes"},
+    {n:m.blocks, l:"Bloqueos"},
+  ]);
+  lineChart("c-msgs", m.messages_weekly, SAGE);
+  barChart("c-groups", m.top_groups, TERRA, true);
+
+  // D. Círculos
+  kpis("kpis-circ", [
+    {n:r.circles, l:"Círculos de cuidado"},
+    {n:r.shared_profiles, l:"Perfiles compartidos"},
+    {n:r.invites_sent, l:"Invitaciones enviadas"},
+    {n:r.invites_accepted, l:"Invitaciones aceptadas"},
+  ]);
+  barChart("c-doses", r.doses_weekly, SAGE, false);
+
+  // E. Notificaciones
+  kpis("kpis-push", [{n:(r.push_adoption_pct||0)+"%", l:"Usuarios con push"}]);
+  doughnut("c-plat", r.platforms);
+}
+
+async function enterApp(){
+  const { data:{ user } } = await client.auth.getUser();
+  hide($("login")); show($("app"));
+  $("whoami").textContent = user ? user.email : "";
+  await loadAll();
+}
+
+// ── Arranque ────────────────────────────────────────────────────────
+(async () => {
+  const { data:{ session } } = await client.auth.getSession();
+  if (session) { await enterApp(); }
+  else { show($("login")); }
+})();
+</script>
+</body>
+</html>

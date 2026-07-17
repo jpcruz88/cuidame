@@ -7,11 +7,11 @@
 <title>Cuídame · Panel de administrador</title>
 <style>
   :root{
-    --sidebar:#FBF6EF; --bg:#FFFFFF; --surface:#FFFFFF; --panel:#FAF6F0;
-    --ink:#2A241F; --muted:#6B6155; --faint:#8C8073; --line:#ECE3D6; --line-soft:#F2EBE0;
-    --terra:#CF6A4C; --terra-ink:#A8482A; --terra-tint:#F7E7DF;
-    --sage:#5E8B6A; --sage-ink:#3F6B4C; --sage-tint:#E7F0EA;
-    --danger:#C0392B; --danger-tint:#FBE7E3; --amber-ink:#9A6A16; --amber-tint:#FBF0DC;
+    --sidebar:#F2F6FA; --bg:#FFFFFF; --surface:#FFFFFF; --panel:#FAF6F0;
+    --ink:#2A241F; --muted:#6B6155; --faint:#8C8073; --line:#DBE6EE; --line-soft:#F2EBE0;
+    --terra:#2A6F97; --terra-ink:#A8482A; --terra-tint:#F7E7DF;
+    --sage:#4F8A6A; --sage-ink:#3F6B4C; --sage-tint:#E7F0EA;
+    --danger:#C0392B; --danger-tint:#FBE7E3; --amber-ink:#9A6A16; --amber-tint:#E4EEF5;
     --radius:14px; --ring:0 0 0 3px rgba(207,106,76,.28);
     --shadow:0 1px 2px rgba(42,36,31,.05);
   }
@@ -106,7 +106,7 @@
   th{background:var(--panel);color:var(--muted);font-weight:700;font-size:.78rem;letter-spacing:.01em;
     position:sticky;top:0;}
   tbody tr{transition:background .12s;}
-  tbody tr:hover{background:#FBF7F1;}
+  tbody tr:hover{background:#F2F6FA;}
   tr:last-child td{border-bottom:none;}
   td.strong{font-weight:700;color:var(--ink);}
 
@@ -334,8 +334,8 @@ const SUPABASE_URL = "https://ebvfbcrqhcwrzkbljqsr.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVidmZiY3JxaGN3cnprYmxqcXNyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4NzA0OTAsImV4cCI6MjA5ODQ0NjQ5MH0.e3F5H_vdsSQ16CBkZRZIDvBWZNdWrD2l6oY8fyZAvfk";
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-const PAL = ["#CF6A4C","#5E8B6A","#E0A87E","#7FA88B","#C98A6A","#A7C3B0","#8C8073","#D4B08C","#B5745A","#93B79F"];
-const LINE="#ECE3D6", TERRA="#CF6A4C", SAGE="#5E8B6A", MUTED="#6B6155";
+const PAL = ["#2A6F97","#4F8A6A","#E0A87E","#7FA88B","#C98A6A","#A7C3B0","#8C8073","#D4B08C","#B5745A","#93B79F"];
+const LINE="#DBE6EE", TERRA="#2A6F97", SAGE="#4F8A6A", MUTED="#6B6155";
 const METRIC={bloodPressure:"Presión",glucose:"Glucosa",temperature:"Temperatura",spo2:"Oxigenación",
   heartRate:"Frec. cardíaca",respiratoryRate:"Frec. respiratoria",pain:"Dolor",weight:"Peso"};
 const TITLES={resumen:"Resumen",usuarios:"Usuarios",mensajes:"Mensajes",salud:"Salud",enviar:"Enviar aviso"};

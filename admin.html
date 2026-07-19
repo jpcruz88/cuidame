@@ -8,11 +8,12 @@
 <style>
   :root{
     --sidebar:#F2F6FA; --bg:#FFFFFF; --surface:#FFFFFF; --panel:#FAF6F0;
-    --ink:#2A241F; --muted:#6B6155; --faint:#8C8073; --line:#DBE6EE; --line-soft:#F2EBE0;
-    --terra:#2A6F97; --terra-ink:#A8482A; --terra-tint:#F7E7DF;
+    --ink:#2A241F; --muted:#6B6155; --faint:#736A60; --line:#DBE6EE; --line-soft:#F2EBE0;
+    --action:#2A6F97; --action-hover:#215B7C; --action-tint:#E4EEF5;
+    --warm-ink:#A8482A; --warm-tint:#F7E7DF;
     --sage:#4F8A6A; --sage-ink:#3F6B4C; --sage-tint:#E7F0EA;
-    --danger:#C0392B; --danger-tint:#FBE7E3; --amber-ink:#9A6A16; --amber-tint:#E4EEF5;
-    --radius:14px; --ring:0 0 0 3px rgba(207,106,76,.28);
+    --danger:#C0392B; --danger-tint:#FBE7E3; --amber-ink:#9A6A16; --amber-tint:#FBF0DA;
+    --radius:14px; --ring:0 0 0 3px rgba(42,111,151,.30);
     --shadow:0 1px 2px rgba(42,36,31,.05);
   }
   *{box-sizing:border-box}
@@ -22,7 +23,7 @@
     font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;}
   .num{font-variant-numeric:tabular-nums;}
   button{font-family:inherit;cursor:pointer;}
-  a{color:var(--terra-ink);}
+  a{color:var(--warm-ink);}
   ::placeholder{color:var(--faint);}
   :focus-visible{outline:none;box-shadow:var(--ring);border-radius:10px;}
 
@@ -30,11 +31,11 @@
   .btn,.btn-ghost,.btn-subtle,.btn-danger{border-radius:11px;font-weight:650;font-size:.92rem;
     padding:9px 15px;border:1px solid transparent;display:inline-flex;align-items:center;gap:7px;
     transition:background .16s ease,border-color .16s ease,color .16s ease,transform .1s ease;}
-  .btn{background:var(--terra);color:#fff;}
-  .btn:hover{background:#BC5B3E;}
+  .btn{background:var(--action);color:#fff;}
+  .btn:hover{background:var(--action-hover);}
   .btn:active{transform:translateY(1px);}
-  .btn-ghost{background:transparent;color:var(--terra-ink);border-color:var(--terra);}
-  .btn-ghost:hover{background:var(--terra-tint);}
+  .btn-ghost{background:transparent;color:var(--warm-ink);border-color:var(--action);}
+  .btn-ghost:hover{background:var(--warm-tint);}
   .btn-subtle{background:var(--panel);color:var(--ink);border-color:var(--line);}
   .btn-subtle:hover{background:#F1E9DD;}
   .btn-danger{background:var(--danger);color:#fff;}
@@ -46,16 +47,16 @@
   /* Inputs */
   input,textarea,select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:11px;
     font-size:.95rem;background:var(--surface);color:var(--ink);font-family:inherit;transition:border-color .16s;}
-  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--terra);box-shadow:var(--ring);}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--action);box-shadow:var(--ring);}
   textarea{resize:vertical;}
   label.field{display:block;font-size:.82rem;font-weight:650;color:var(--muted);margin-bottom:6px;}
 
   /* Shell */
-  .shell{display:grid;grid-template-columns:250px 1fr;min-height:100dvh;}
+  .shell{display:grid;grid-template-columns:250px 1fr;min-height:100dvh;min-width:0;}
   .sidebar{background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;
     padding:18px 14px;position:sticky;top:0;height:100dvh;}
   .brand{display:flex;align-items:center;gap:11px;padding:4px 8px 14px;}
-  .brand-mark{width:38px;height:38px;border-radius:11px;background:var(--terra);color:#fff;
+  .brand-mark{width:38px;height:38px;border-radius:11px;background:var(--action);color:#fff;
     display:grid;place-items:center;font-weight:800;font-size:1.1rem;}
   .brand-text{display:flex;flex-direction:column;line-height:1.15;}
   .brand-text b{font-size:1.02rem;font-weight:750;}
@@ -65,7 +66,7 @@
     background:transparent;color:var(--muted);font-size:.94rem;font-weight:600;text-align:left;width:100%;
     transition:background .16s,color .16s;}
   .nav-item:hover{background:#F3ECDF;color:var(--ink);}
-  .nav-item.active{background:var(--terra-tint);color:var(--terra-ink);font-weight:700;}
+  .nav-item.active{background:var(--warm-tint);color:var(--warm-ink);font-weight:700;}
   .nav-item .icon{stroke-width:1.9;}
   .side-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line-soft);
     display:flex;align-items:center;justify-content:space-between;gap:8px;}
@@ -86,6 +87,11 @@
   .stat{background:var(--surface);padding:15px 17px;}
   .stat .n{font-size:1.55rem;font-weight:780;line-height:1.05;letter-spacing:-.01em;}
   .stat .l{font-size:.8rem;color:var(--muted);margin-top:3px;font-weight:600;}
+  /* Las cifras de dinero mandan: el gasto es la decisi\u00f3n, el volumen es contexto. */
+  .stats.lead .stat{padding:19px 20px;}
+  .stats.lead .stat .n{font-size:2.15rem;}
+  .stats.lead .stat .n.money{color:var(--action);}
+  .stat .sub{font-size:.76rem;color:var(--faint);margin-top:5px;}
 
   .subhead{font-size:.86rem;font-weight:750;color:var(--muted);text-transform:none;margin:26px 0 12px;
     display:flex;align-items:center;gap:8px;}
@@ -126,7 +132,7 @@
   .rowbtn{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;
     background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;
     transition:border-color .16s,background .16s;}
-  .rowbtn:hover{border-color:var(--terra);background:#FDFBF8;}
+  .rowbtn:hover{border-color:var(--action);background:#FDFBF8;}
   .rowbtn .chev{color:var(--faint);}
 
   /* Composer */
@@ -135,7 +141,7 @@
   .seg button{flex:1;padding:10px;border:none;background:var(--surface);color:var(--muted);font-weight:650;font-size:.9rem;
     border-right:1px solid var(--line);transition:background .16s,color .16s;}
   .seg button:last-child{border-right:none;}
-  .seg button.on{background:var(--terra);color:#fff;}
+  .seg button.on{background:var(--action);color:#fff;}
   .picklist{border:1px solid var(--line);border-radius:12px;max-height:260px;overflow:auto;margin-top:8px;}
   .pickrow{display:flex;align-items:center;gap:11px;padding:10px 13px;border-bottom:1px solid var(--line-soft);cursor:pointer;}
   .pickrow:last-child{border-bottom:none;}
@@ -144,8 +150,8 @@
   .pickrow .pu{font-weight:650;}
   .pickrow .pe{font-size:.8rem;color:var(--muted);}
   .helper{font-size:.83rem;color:var(--muted);}
-  .review{border:1px solid var(--terra);background:var(--terra-tint);border-radius:12px;padding:14px 16px;}
-  .review .big{font-size:1.05rem;font-weight:700;color:var(--terra-ink);}
+  .review{border:1px solid #E2B8A6;background:var(--warm-tint);border-radius:12px;padding:14px 16px;}
+  .review .big{font-size:1.05rem;font-weight:700;color:var(--warm-ink);}
 
   .banner{border-radius:12px;padding:12px 15px;font-size:.9rem;}
   .banner.error{background:var(--danger-tint);color:#8f2a1e;border:1px solid #e7b3aa;}
@@ -166,11 +172,20 @@
 
   @media (max-width:900px){
     .shell{grid-template-columns:1fr;}
+    /* min-width:0 también aquí: como elemento de rejilla hereda min-width:auto,
+       y sin esto la barra impone su contenido mínimo a toda la página. */
     .sidebar{position:sticky;top:0;height:auto;flex-direction:row;align-items:center;flex-wrap:wrap;
-      border-right:none;border-bottom:1px solid var(--line);padding:12px 14px;gap:8px;z-index:20;}
+      border-right:none;border-bottom:1px solid var(--line);padding:12px 14px;gap:8px;z-index:20;
+      min-width:0;}
     .brand{padding:0;order:1;}
-    .side-foot{margin:0;padding:0;border:none;order:2;margin-left:auto;}
-    .nav{flex-direction:row;overflow-x:auto;order:3;flex:1 0 100%;gap:4px;padding-bottom:2px;}
+    .side-foot{margin:0;padding:0;border:none;order:2;margin-left:auto;min-width:0;}
+    /* min-width:0 es obligatorio: sin él, un elemento flex nunca baja de su
+       contenido mínimo y el overflow-x:auto de aquí abajo no se activaba, así
+       que la barra lateral estiraba TODA la página a lo ancho. */
+    .nav{flex-direction:row;overflow-x:auto;order:3;flex:1 1 100%;min-width:0;gap:4px;
+      padding-bottom:2px;scrollbar-width:thin;}
+    .side-foot{min-width:0;}
+    .who{min-width:0;flex:1;}
     .nav-item{flex:none;}
     .topbar{padding:14px 18px;}
     .content{padding:18px 18px 48px;}
@@ -293,16 +308,17 @@
       <!-- ENVIAR AVISO -->
       <!-- CONSUMO IA -->
       <section id="v-consumo" class="hidden">
-        <div class="stats" id="ia-strip"></div>
-        <div class="subhead">Gasto y volumen</div>
+        <div class="stats lead" id="ia-lead"></div>
+        <div class="stats" id="ia-strip" style="margin-top:12px"></div>
+        <div class="subhead">C&oacute;mo va el gasto</div>
         <div class="grid2">
-          <div class="card"><h3>Escaneos por día (30 días)</h3><div class="chart-box"><canvas id="c-ia-dia"></canvas></div></div>
-          <div class="card"><h3>Costo por día en USD (30 días)</h3><div class="chart-box"><canvas id="c-ia-costo"></canvas></div></div>
+          <div class="card"><h3>Escaneos por d&iacute;a (30 d&iacute;as)</h3><div class="chart-box"><canvas id="c-ia-dia"></canvas></div></div>
+          <div class="card"><h3>Gasto acumulado del mes</h3><div class="chart-box"><canvas id="c-ia-costo"></canvas></div></div>
         </div>
-        <div class="subhead">De dónde sale el costo</div>
+        <div class="subhead">De d&oacute;nde sale el costo</div>
         <div class="grid2">
-          <div class="card"><h3>Tokens por tipo</h3><div class="chart-box"><canvas id="c-ia-tokens"></canvas></div></div>
-          <div class="card"><h3>Escaneos por resultado</h3><div class="chart-box"><canvas id="c-ia-tipo"></canvas></div></div>
+          <div class="card"><h3>Peso de cada tipo de token en el costo</h3><div class="chart-box"><canvas id="c-ia-tokens"></canvas></div></div>
+          <div class="card"><h3>En qu&eacute; termina cada escaneo</h3><div class="chart-box"><canvas id="c-ia-tipo"></canvas></div></div>
         </div>
         <div class="subhead">Cuentas que más escanean</div>
         <div class="tablewrap">
@@ -361,11 +377,11 @@ const SUPABASE_URL = "https://ebvfbcrqhcwrzkbljqsr.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVidmZiY3JxaGN3cnprYmxqcXNyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4NzA0OTAsImV4cCI6MjA5ODQ0NjQ5MH0.e3F5H_vdsSQ16CBkZRZIDvBWZNdWrD2l6oY8fyZAvfk";
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
+const miles = n => Number(n||0).toLocaleString("es-MX");
 const PAL = ["#2A6F97","#4F8A6A","#E0A87E","#7FA88B","#C98A6A","#A7C3B0","#8C8073","#D4B08C","#B5745A","#93B79F"];
 const LINE="#DBE6EE", TERRA="#2A6F97", SAGE="#4F8A6A", MUTED="#6B6155";
 const METRIC={bloodPressure:"Presión",glucose:"Glucosa",temperature:"Temperatura",spo2:"Oxigenación",
   heartRate:"Frec. cardíaca",respiratoryRate:"Frec. respiratoria",pain:"Dolor",weight:"Peso"};
-const TITLES={resumen:"Resumen",usuarios:"Usuarios",mensajes:"Mensajes",salud:"Salud",enviar:"Enviar aviso"};
 Chart.defaults.font.family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif";
 Chart.defaults.color=MUTED;
 
@@ -397,11 +413,16 @@ $("logout").onclick=async()=>{ await client.auth.signOut(); location.reload(); }
 $("refresh").onclick=()=>loadAll(true);
 
 // ── Nav ──
+// La lista de pestañas sale del propio HTML: antes estaba escrita a mano aquí
+// y en TITLES, así que agregar una pestaña nueva la dejaba muerta (se marcaba
+// activa pero su sección nunca se mostraba).
+const NAV=[...document.querySelectorAll(".nav-item")];
+const TABS=NAV.map(b=>b.dataset.tab);
 $("nav").addEventListener("click",e=>{ const t=e.target.closest(".nav-item"); if(!t)return;
-  document.querySelectorAll(".nav-item").forEach(x=>x.classList.toggle("active",x===t));
+  NAV.forEach(x=>{ const on=x===t; x.classList.toggle("active",on); x.setAttribute("aria-selected",on); });
   const tab=t.dataset.tab;
-  ["resumen","usuarios","mensajes","salud","enviar"].forEach(v=>$("v-"+v).classList.toggle("hidden",v!==tab));
-  $("page-title").textContent=TITLES[tab];
+  TABS.forEach(v=>$("v-"+v).classList.toggle("hidden",v!==tab));
+  $("page-title").textContent=t.textContent.trim();
   window.scrollTo({top:0,behavior:"instant"});
 });
 
@@ -409,14 +430,24 @@ $("nav").addEventListener("click",e=>{ const t=e.target.closest(".nav-item"); if
 const destroy=id=>{ if(charts[id]){charts[id].destroy(); delete charts[id];} };
 const xs=s=>(s||[]).map(p=>p.x), ys=s=>(s||[]).map(p=>p.y);
 const gridcfg={grid:{color:LINE},ticks:{precision:0}};
-function lineChart(id,s,c){ destroy(id); charts[id]=new Chart($(id),{type:"line",
-  data:{labels:xs(s),datasets:[{data:ys(s),borderColor:c,backgroundColor:c+"22",fill:true,tension:.3,pointRadius:3,pointBackgroundColor:c}]},
-  options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,...gridcfg}}}}); }
+// Para dinero: precision:0 obligaba a marcas enteras, as\u00ed que una serie de
+// centavos se aplastaba contra el eje y la l\u00ednea sal\u00eda plana e ilegible.
+const moneycfg={grid:{color:LINE},ticks:{callback:v=>"$"+Number(v).toFixed(2)}};
+// 30 etiquetas diarias no caben: se muestran ~6 y el resto vive en el tooltip.
+const pocasX={grid:{display:false},ticks:{maxTicksLimit:7,autoSkip:true,maxRotation:0}};
+function lineChart(id,s,c,o){ o=o||{}; destroy(id); charts[id]=new Chart($(id),{type:"line",
+  data:{labels:xs(s),datasets:[{data:ys(s),borderColor:c,backgroundColor:c+"22",fill:true,tension:.3,
+    pointRadius:o.densa?0:3,pointHoverRadius:4,borderWidth:2,pointBackgroundColor:c}]},
+  options:{maintainAspectRatio:false,plugins:{legend:{display:false},
+    tooltip:o.money?{callbacks:{label:t=>"$"+Number(t.parsed.y).toFixed(4)}}:{}},
+    scales:{x:o.densa?pocasX:{grid:{display:false}},
+            y:{beginAtZero:true,...(o.money?moneycfg:gridcfg)}}}}); }
 function barChart(id,s,c,h){ destroy(id); charts[id]=new Chart($(id),{type:"bar",
   data:{labels:xs(s),datasets:[{data:ys(s),backgroundColor:c,borderRadius:6,maxBarThickness:44}]},
   options:{indexAxis:h?"y":"x",maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},...gridcfg},y:{beginAtZero:true,...gridcfg}}}}); }
-function doughnut(id,s){ destroy(id); charts[id]=new Chart($(id),{type:"doughnut",
-  data:{labels:xs(s),datasets:[{data:ys(s),backgroundColor:s.map((_,i)=>PAL[i%PAL.length]),borderWidth:0}]},
+function doughnut(id,s,cols){ destroy(id); s=(s||[]).filter(p=>p.y>0); destroy(id);
+  charts[id]=new Chart($(id),{type:"doughnut",
+  data:{labels:xs(s),datasets:[{data:ys(s),backgroundColor:cols||s.map((_,i)=>PAL[i%PAL.length]),borderWidth:0}]},
   options:{maintainAspectRatio:false,cutout:"60%",plugins:{legend:{position:"bottom",labels:{boxWidth:11,padding:12,font:{size:11}}}}}}); }
 
 // ── Carga ──
@@ -445,9 +476,9 @@ async function loadAll(isRefresh){
 
 function stat(n,l){ return `<div class="stat"><div class="n num">${n}</div><div class="l">${l}</div></div>`; }
 function renderResumen(o,c,m,r){
-  $("stat-strip").innerHTML=[stat(o.total_users,"Usuarios con nombre"),stat(o.total_signups,"Registros (correo)"),
-    stat(o.total_profiles,"Perfiles publicados"),stat(o.active_7d,"Activos 7 días"),
-    stat((r.push_adoption_pct||0)+"%","Con push"),stat(r.circles,"Círculos")].join("");
+  $("stat-strip").innerHTML=[stat(miles(o.total_users),"Usuarios con nombre"),stat(miles(o.total_signups),"Registros (correo)"),
+    stat(miles(o.total_profiles),"Perfiles publicados"),stat(miles(o.active_7d),"Activos 7 días"),
+    stat((r.push_adoption_pct||0)+"%","Con push"),stat(miles(r.circles),"Círculos")].join("");
   lineChart("c-growth",o.growth_weekly,TERRA); barChart("c-funnel",o.funnel,SAGE,false);
   doughnut("c-cond",c.distribution); barChart("c-meds",c.top_meds,TERRA,true);
   lineChart("c-msgs",m.messages_weekly,SAGE); barChart("c-groups",m.top_groups,TERRA,true);
@@ -458,40 +489,60 @@ function renderResumen(o,c,m,r){
 // ── Consumo de IA ──
 // Los datos vienen de admin_scan_metrics(), que como toda función del panel
 // exige is_admin() en el servidor: sin sesión de administrador devuelve 403.
-const usd = n => "$" + Number(n||0).toFixed(n>=1?2:4);
-const miles = n => Number(n||0).toLocaleString("es-MX");
+const ACTION="#2A6F97", WARM="#C97A54", DANGER="#C0392B";
+function statSub(n,l,sub,money){ return `<div class="stat"><div class="n num${money?" money":""}">${n}</div>`+
+  `<div class="l">${l}</div><div class="sub">${sub}</div></div>`; }
+const usd = n => "$" + Number(n||0).toFixed(2);          // cifras grandes
+const usdFino = n => "$" + Number(n||0).toFixed(4);      // tablas
 
 function renderConsumo(d){
-  if(!d){ $("ia-strip").innerHTML=""; return; }
+  if(!d){ $("ia-lead").innerHTML=""; $("ia-strip").innerHTML=""; return; }
   const t=d.total||{}, m=d.mes||{}, pr=d.promedio||{}, td=d.tokens_detalle||{};
 
+  // El gasto manda. "Costo por escaneo" en cuatro decimales no se lee de un
+  // vistazo, y la pregunta real es si el escaneo puede seguir siendo gratis:
+  // por eso se muestra por cada mil, que es la escala en la que se decide.
+  const porMil = (pr.costo_usd||0)*1000;
+  $("ia-lead").innerHTML=[
+    statSub(usd(m.costo_usd),"Gasto este mes",miles(m.escaneos)+" escaneos",true),
+    statSub(usd(t.costo_usd),"Gasto acumulado","desde el primer escaneo",true),
+    statSub("$"+porMil.toFixed(2),"Por cada 1,000 escaneos","al ritmo actual",true),
+  ].join("");
+
+  const exito = t.escaneos ? Math.round((t.exitosos/t.escaneos)*100) : 0;
   $("ia-strip").innerHTML=[
     stat(miles(t.escaneos),"Escaneos en total"),
-    stat(usd(t.costo_usd),"Gasto acumulado"),
-    stat(usd(m.costo_usd),"Gasto este mes"),
-    stat(usd(pr.costo_usd),"Costo por escaneo"),
-    stat(miles(t.tokens),"Tokens usados"),
+    stat(exito+"%","Terminaron bien"),
     stat(miles(pr.tokens),"Tokens por escaneo"),
   ].join("");
 
   const dia=d.diario||[];
-  lineChart("c-ia-dia", dia.map(x=>({x:x.fecha.slice(5),y:x.escaneos})), TERRA);
-  lineChart("c-ia-costo", dia.map(x=>({x:x.fecha.slice(5),y:Number(x.costo_usd)})), SAGE);
+  lineChart("c-ia-dia", dia.map(x=>({x:x.fecha.slice(5),y:x.escaneos})), ACTION, {densa:true});
 
+  // Acumulado, no costo diario: el costo diario es los escaneos diarios por una
+  // constante, as\u00ed que era la misma curva dos veces. Lo acumulado responde otra
+  // pregunta: a qu\u00e9 velocidad crece la cuenta.
+  let suma=0;
+  const acum = dia.map(x=>({x:x.fecha.slice(5), y:+(suma+=Number(x.costo_usd)).toFixed(4)}));
+  lineChart("c-ia-costo", acum, SAGE, {densa:true, money:true});
+
+  // Los tokens de salida cuestan 8 veces los de entrada ($2.50 contra $0.30 por
+  // mill\u00f3n). Contarlos por cantidad esconde eso; se muestran por su costo.
+  const cIn=(td.entrada||0)/1e6*0.30, cOut=((td.salida||0)+(td.pensamiento||0))/1e6*2.50;
   doughnut("c-ia-tokens",[
-    {x:"Entrada",y:td.entrada||0},
-    {x:"Salida",y:td.salida||0},
-    {x:"Pensamiento",y:td.pensamiento||0},
-  ]);
+    {x:"Salida ("+miles(td.salida)+" tokens)",y:+cOut.toFixed(4)},
+    {x:"Entrada ("+miles(td.entrada)+" tokens)",y:+cIn.toFixed(4)},
+  ],[WARM,ACTION]);
+
   doughnut("c-ia-tipo",[
     {x:"Recetas",y:t.recetas||0},
     {x:"Ex\u00e1menes",y:t.examenes||0},
-    {x:"Fallidos",y:t.fallidos||0},
-  ]);
+    {x:"Sin resultado",y:t.fallidos||0},
+  ],[ACTION,SAGE,DANGER]);
 
   $("ia-top").innerHTML=(d.top_cuentas||[]).map(c=>`<tr>
     <td class="strong">${esc(c.correo)}</td><td class="num">${miles(c.escaneos)}</td>
-    <td class="num">${usd(c.costo_usd)}</td></tr>`).join("")
+    <td class="num">${usdFino(c.costo_usd)}</td></tr>`).join("")
     || '<tr><td colspan=3 class=empty>Todav\u00eda no hay escaneos.</td></tr>';
 
   $("ia-err").innerHTML=(d.errores||[]).map(e=>`<tr>

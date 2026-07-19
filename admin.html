@@ -215,6 +215,7 @@
       <button class="nav-item" data-tab="usuarios"><svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Usuarios</button>
       <button class="nav-item" data-tab="mensajes"><svg class="icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>Mensajes</button>
       <button class="nav-item" data-tab="salud"><svg class="icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>Salud</button>
+      <button class="nav-item" data-tab="consumo"><svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Consumo IA</button>
       <button class="nav-item" data-tab="enviar"><svg class="icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Enviar aviso</button>
     </nav>
     <div class="side-foot">
@@ -290,6 +291,32 @@
       </section>
 
       <!-- ENVIAR AVISO -->
+      <!-- CONSUMO IA -->
+      <section id="v-consumo" class="hidden">
+        <div class="stats" id="ia-strip"></div>
+        <div class="subhead">Gasto y volumen</div>
+        <div class="grid2">
+          <div class="card"><h3>Escaneos por día (30 días)</h3><div class="chart-box"><canvas id="c-ia-dia"></canvas></div></div>
+          <div class="card"><h3>Costo por día en USD (30 días)</h3><div class="chart-box"><canvas id="c-ia-costo"></canvas></div></div>
+        </div>
+        <div class="subhead">De dónde sale el costo</div>
+        <div class="grid2">
+          <div class="card"><h3>Tokens por tipo</h3><div class="chart-box"><canvas id="c-ia-tokens"></canvas></div></div>
+          <div class="card"><h3>Escaneos por resultado</h3><div class="chart-box"><canvas id="c-ia-tipo"></canvas></div></div>
+        </div>
+        <div class="subhead">Cuentas que más escanean</div>
+        <div class="tablewrap">
+          <table><thead><tr><th>Correo</th><th>Escaneos</th><th>Costo USD</th></tr></thead>
+          <tbody id="ia-top"></tbody></table>
+        </div>
+        <div class="subhead">Escaneos fallidos</div>
+        <div class="tablewrap">
+          <table><thead><tr><th>Motivo</th><th>Veces</th></tr></thead>
+          <tbody id="ia-err"></tbody></table>
+        </div>
+        <p class="helper" style="margin-top:14px">Se registra una llamada por cada uso de la IA, incluidas las que fallan o se quedan sin cuota: esas tambi&eacute;n se pagan. No se guarda nada del contenido de la receta.</p>
+      </section>
+
       <section id="v-enviar" class="hidden">
         <div class="card composer stack">
           <div>
@@ -396,12 +423,12 @@ function doughnut(id,s){ destroy(id); charts[id]=new Chart($(id),{type:"doughnut
 async function loadAll(isRefresh){
   banner($("app-msg"),"");
   const btn=$("refresh"); if(isRefresh){btn.disabled=true;}
-  const [ov,co,cm,ci,us,me,sp]=await Promise.all([
+  const [ov,co,cm,ci,us,me,sp,ia]=await Promise.all([
     client.rpc("admin_overview"),client.rpc("admin_conditions"),client.rpc("admin_community"),
     client.rpc("admin_circles"),client.rpc("admin_users"),client.rpc("admin_messages",{p_limit:300}),
-    client.rpc("admin_shared_profiles")]);
+    client.rpc("admin_shared_profiles"),client.rpc("admin_scan_metrics")]);
   btn.disabled=false;
-  const err=ov.error||co.error||cm.error||ci.error||us.error||me.error||sp.error;
+  const err=ov.error||co.error||cm.error||ci.error||us.error||me.error||sp.error||ia.error;
   if(err){
     if(err.code==="42501"||/forbidden/i.test(err.message||"")) banner($("app-msg"),"No autorizado: esta cuenta no es administrador.");
     else banner($("app-msg"),'No se pudieron cargar los datos ('+esc(err.message||"error de red")+'). <a href="#" onclick="loadAll(true);return false">Reintentar</a>');
@@ -411,6 +438,7 @@ async function loadAll(isRefresh){
   usersData=us.data||[]; renderUsers(); renderPickList();
   msgsData=me.data||[]; renderMessages();
   sharedData=sp.data||[]; renderShared();
+  renderConsumo(ia.data);
   await loadConditions();
   $("updated").textContent="Actualizado "+new Date().toLocaleTimeString("es-MX",{hour:"2-digit",minute:"2-digit"});
 }
@@ -425,6 +453,62 @@ function renderResumen(o,c,m,r){
   lineChart("c-msgs",m.messages_weekly,SAGE); barChart("c-groups",m.top_groups,TERRA,true);
   barChart("c-doses",r.doses_weekly,SAGE,false); doughnut("c-plat",r.platforms);
 }
+
+
+// ── Consumo de IA ──
+// Los datos vienen de admin_scan_metrics(), que como toda función del panel
+// exige is_admin() en el servidor: sin sesión de administrador devuelve 403.
+const usd = n => "$" + Number(n||0).toFixed(n>=1?2:4);
+const miles = n => Number(n||0).toLocaleString("es-MX");
+
+function renderConsumo(d){
+  if(!d){ $("ia-strip").innerHTML=""; return; }
+  const t=d.total||{}, m=d.mes||{}, pr=d.promedio||{}, td=d.tokens_detalle||{};
+
+  $("ia-strip").innerHTML=[
+    stat(miles(t.escaneos),"Escaneos en total"),
+    stat(usd(t.costo_usd),"Gasto acumulado"),
+    stat(usd(m.costo_usd),"Gasto este mes"),
+    stat(usd(pr.costo_usd),"Costo por escaneo"),
+    stat(miles(t.tokens),"Tokens usados"),
+    stat(miles(pr.tokens),"Tokens por escaneo"),
+  ].join("");
+
+  const dia=d.diario||[];
+  lineChart("c-ia-dia", dia.map(x=>({x:x.fecha.slice(5),y:x.escaneos})), TERRA);
+  lineChart("c-ia-costo", dia.map(x=>({x:x.fecha.slice(5),y:Number(x.costo_usd)})), SAGE);
+
+  doughnut("c-ia-tokens",[
+    {x:"Entrada",y:td.entrada||0},
+    {x:"Salida",y:td.salida||0},
+    {x:"Pensamiento",y:td.pensamiento||0},
+  ]);
+  doughnut("c-ia-tipo",[
+    {x:"Recetas",y:t.recetas||0},
+    {x:"Ex\u00e1menes",y:t.examenes||0},
+    {x:"Fallidos",y:t.fallidos||0},
+  ]);
+
+  $("ia-top").innerHTML=(d.top_cuentas||[]).map(c=>`<tr>
+    <td class="strong">${esc(c.correo)}</td><td class="num">${miles(c.escaneos)}</td>
+    <td class="num">${usd(c.costo_usd)}</td></tr>`).join("")
+    || '<tr><td colspan=3 class=empty>Todav\u00eda no hay escaneos.</td></tr>';
+
+  $("ia-err").innerHTML=(d.errores||[]).map(e=>`<tr>
+    <td>${esc(MOTIVOS[e.codigo]||e.codigo)}</td><td class="num">${miles(e.veces)}</td></tr>`).join("")
+    || '<tr><td colspan=2 class=empty>Ning\u00fan escaneo ha fallado.</td></tr>';
+}
+
+// Los c\u00f3digos internos no le dicen nada a nadie: se traducen.
+const MOTIVOS={
+  cuota:"Se acab\u00f3 la cuota del mes",
+  no_meds:"No se pudieron leer las medicinas",
+  no_es_receta:"La foto no era una receta",
+  parse:"La IA respondi\u00f3 en un formato inesperado",
+  ia_http:"Gemini devolvi\u00f3 un error",
+  ia_excepcion:"Fall\u00f3 la conexi\u00f3n con Gemini",
+  desconocido:"Sin clasificar",
+};
 
 function statusPill(u){ if(u.banned)return '<span class="pill warn">baneado</span>';
   if(u.status&&u.status!=="active")return `<span class="pill warn">${esc(u.status)}</span>`;
